@@ -4,7 +4,7 @@ import os
 
 print("Updating Stock Analysis data from Yahoo Finance...")
 
-tickers = ['JPM', 'AMZN', 'NVDA', 'CRWD', 'BAC']
+tickers = ['JPM', 'AMZN', 'NVDA', 'CRWD', 'BAC', 'TSLA', 'BA', 'SLV', 'QQQM', 'V', 'NEM', 'RTX', 'LMT', 'INTC', 'GOOGL']
 
 # Load existing analysis data from data/analysis.js
 js_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'analysis.js')
@@ -50,9 +50,24 @@ for symbol in tickers:
         t = yf.Ticker(symbol)
         stmt = t.quarterly_income_stmt
         if stmt is None or stmt.empty:
+            # Handle ETFs or assets without standard income statements (e.g. SLV, QQQM)
+            if symbol not in existing_data:
+                existing_data[symbol] = {
+                    "quarters": ["Q2 2026", "Q1 2026", "Q4 2025", "Q3 2025"],
+                    "metrics": {
+                        "Revenue": [None, None, None, None],
+                        "Net Income": [None, None, None, None]
+                    }
+                }
             continue
             
-        stock_dict = existing_data.get(symbol, {"quarters": [], "metrics": {}})
+        stock_dict = existing_data.get(symbol, {"quarters": [], "metrics": {
+            "Revenue": [],
+            "Gross Profit": [],
+            "Operating Income": [],
+            "Net Income": [],
+            "EPS (Diluted)": []
+        }})
         existing_quarters = stock_dict["quarters"]
         existing_metrics = stock_dict["metrics"]
         
@@ -79,29 +94,11 @@ for symbol in tickers:
                             else:
                                 final_val = round(val_float, 2)
                                 
-                            if sa_metric in existing_metrics:
-                                existing_metrics[sa_metric][0] = final_val
-                                
-                if 'Revenue' in existing_metrics and len(existing_metrics['Revenue']) >= 5:
-                    r_curr = existing_metrics['Revenue'][0]
-                    r_yoy = existing_metrics['Revenue'][4]
-                    if r_curr and r_yoy:
-                        if 'Revenue Growth (YoY)' in existing_metrics:
-                            existing_metrics['Revenue Growth (YoY)'][0] = round((r_curr - r_yoy) / abs(r_yoy), 4)
+                            if sa_metric not in existing_metrics:
+                                existing_metrics[sa_metric] = [None] * len(existing_quarters)
+                            existing_metrics[sa_metric][0] = final_val
 
-                if 'Net Income' in existing_metrics and len(existing_metrics['Net Income']) >= 5:
-                    ni_curr = existing_metrics['Net Income'][0]
-                    ni_yoy = existing_metrics['Net Income'][4]
-                    if ni_curr and ni_yoy:
-                        if 'Net Income Growth' in existing_metrics:
-                            existing_metrics['Net Income Growth'][0] = round((ni_curr - ni_yoy) / abs(ni_yoy), 4)
-
-                if 'EPS (Diluted)' in existing_metrics and len(existing_metrics['EPS (Diluted)']) >= 5:
-                    eps_curr = existing_metrics['EPS (Diluted)'][0]
-                    eps_yoy = existing_metrics['EPS (Diluted)'][4]
-                    if eps_curr and eps_yoy:
-                        if 'EPS Growth' in existing_metrics:
-                            existing_metrics['EPS Growth'][0] = round((eps_curr - eps_yoy) / abs(eps_yoy), 4)
+        existing_data[symbol] = stock_dict
 
     except Exception as e:
         print(f"Error processing Yahoo data for {symbol}: {e}")

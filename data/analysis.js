@@ -5185,6 +5185,1090 @@ const saAnalysisData = {
         0.1217
       ]
     }
+  },
+  "TSLA": {
+    "quarters": [
+      "Q2 2026",
+      "Q1 2026",
+      "Q4 2025",
+      "Q3 2025",
+      "Q2 2025",
+      "Q1 2025",
+      "Q4 2024"
+    ],
+    "metrics": {
+      "Revenue": [
+        28236.0,
+        22387.0,
+        24901.0,
+        28095.0,
+        22496.0,
+        null,
+        null
+      ],
+      "Gross Profit": [
+        4751.0,
+        4720.0,
+        5009.0,
+        5054.0,
+        3878.0,
+        null,
+        null
+      ],
+      "Operating Income": [
+        398.0,
+        941.0,
+        1571.0,
+        1862.0,
+        923.0,
+        null,
+        null
+      ],
+      "Net Income": [
+        1114.0,
+        477.0,
+        840.0,
+        1373.0,
+        1172.0,
+        null,
+        null
+      ],
+      "EPS (Diluted)": [
+        0.32,
+        0.13,
+        0.24,
+        0.39,
+        0.33,
+        null,
+        null
+      ],
+      "Net Interest Income": [
+        341.0,
+        342.0,
+        364.0,
+        363.0,
+        306.0,
+        null,
+        null
+      ],
+      "Interest Income on Loans": [
+        422.0,
+        434.0,
+        449.0,
+        439.0,
+        392.0,
+        null,
+        null
+      ],
+      "Interest Paid on Deposits": [
+        81.0,
+        92.0,
+        85.0,
+        76.0,
+        86.0,
+        null,
+        null
+      ],
+      "Net Income to Common": [
+        1116.0,
+        477.0,
+        840.0,
+        1373.0,
+        1172.0,
+        null,
+        null
+      ],
+      "Pretax Income": [
+        1329.0,
+        748.0,
+        1181.0,
+        1959.0,
+        1549.0,
+        null,
+        null
+      ],
+      "Income Tax Expense": [
+        201.0,
+        257.0,
+        325.0,
+        570.0,
+        359.0,
+        null,
+        null
+      ],
+      "EPS (Basic)": [
+        0.34,
+        0.15,
+        0.26,
+        0.43,
+        0.36,
+        null,
+        null
+      ],
+      "Selling, General & Administrative": [
+        1982.0,
+        1833.0,
+        1655.0,
+        1562.0,
+        1366.0,
+        null,
+        null
+      ],
+      "Diluted Shares Outstanding": [
+        3540.0,
+        3538.0,
+        3539.0,
+        3526.0,
+        3519.0,
+        null,
+        null
+      ],
+      "Basic Shares Outstanding": [
+        3237.0,
+        3234.0,
+        3231.0,
+        3227.0,
+        3223.0,
+        null,
+        null
+      ]
+    }
+  },
+  "BA": {
+    "quarters": [
+      "Q2 2026",
+      "Q1 2026",
+      "Q4 2025",
+      "Q3 2025",
+      "Q2 2025",
+      "Q1 2025"
+    ],
+    "metrics": {
+      "Revenue": [
+        null,
+        22217.0,
+        23948.0,
+        23270.0,
+        22749.0,
+        19496.0
+      ],
+      "Gross Profit": [
+        null,
+        2546.0,
+        1812.0,
+        -2375.0,
+        2435.0,
+        2417.0
+      ],
+      "Operating Income": [
+        null,
+        446.0,
+        -815.0,
+        -4794.0,
+        -268.0,
+        461.0
+      ],
+      "Net Income": [
+        null,
+        -4.0,
+        8220.0,
+        -5337.0,
+        -611.0,
+        -37.0
+      ],
+      "EPS (Diluted)": [
+        -0.67,
+        -0.11,
+        10.23,
+        -7.14,
+        -0.92,
+        null
+      ],
+      "Net Interest Income": [
+        null,
+        -616.0,
+        -659.0,
+        -694.0,
+        -710.0,
+        -708.0
+      ],
+      "Interest Paid on Deposits": [
+        null,
+        616.0,
+        659.0,
+        694.0,
+        710.0,
+        708.0
+      ],
+      "Net Income to Common": [
+        null,
+        -90.0,
+        7874.0,
+        -5337.0,
+        -697.0,
+        -123.0
+      ],
+      "Pretax Income": [
+        null,
+        26.0,
+        8319.0,
+        -5199.0,
+        -561.0,
+        76.0
+      ],
+      "Income Tax Expense": [
+        null,
+        33.0,
+        99.0,
+        140.0,
+        51.0,
+        107.0
+      ],
+      "Selling, General & Administrative": [
+        null,
+        1197.0,
+        1663.0,
+        1522.0,
+        1793.0,
+        1112.0
+      ],
+      "EPS (Basic)": [
+        -0.67,
+        -0.11,
+        10.59,
+        -7.14,
+        -0.92,
+        null
+      ],
+      "Diluted Shares Outstanding": [
+        790.6,
+        788.0,
+        803.8,
+        756.7,
+        664.13,
+        null
+      ],
+      "Basic Shares Outstanding": [
+        790.6,
+        788.0,
+        768.08,
+        747.48,
+        664.13,
+        null
+      ]
+    }
+  },
+  "SLV": {
+    "quarters": [
+      "Q2 2026",
+      "Q1 2026",
+      "Q4 2025",
+      "Q3 2025"
+    ],
+    "metrics": {
+      "Revenue": [
+        null,
+        null,
+        null,
+        null
+      ],
+      "Net Income": [
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  },
+  "QQQM": {
+    "quarters": [
+      "Q2 2026",
+      "Q1 2026",
+      "Q4 2025",
+      "Q3 2025"
+    ],
+    "metrics": {
+      "Revenue": [
+        null,
+        null,
+        null,
+        null
+      ],
+      "Net Income": [
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  },
+  "V": {
+    "quarters": [
+      "Q2 2026",
+      "Q1 2026",
+      "Q4 2025",
+      "Q3 2025",
+      "Q2 2025",
+      "Q1 2025"
+    ],
+    "metrics": {
+      "Revenue": [
+        14817.0,
+        14155.0,
+        13956.0,
+        13796.0,
+        13116.0,
+        null
+      ],
+      "Gross Profit": [
+        8895.0,
+        9129.0,
+        8904.0,
+        8743.0,
+        8199.0,
+        null
+      ],
+      "Operating Income": [
+        7130.0,
+        7563.0,
+        7445.0,
+        7051.0,
+        6792.0,
+        null
+      ],
+      "Net Income": [
+        5628.0,
+        6021.0,
+        5853.0,
+        5090.0,
+        5272.0,
+        null
+      ],
+      "EPS (Diluted)": [
+        2.97,
+        3.14,
+        3.03,
+        2.62,
+        2.69,
+        null
+      ],
+      "Net Interest Income": [
+        -194.0,
+        -178.0,
+        -194.0,
+        -210.0,
+        -39.0,
+        null
+      ],
+      "Interest Paid on Deposits": [
+        194.0,
+        178.0,
+        194.0,
+        210.0,
+        39.0,
+        null
+      ],
+      "Net Income to Common": [
+        5628.0,
+        5972.0,
+        5803.0,
+        5041.0,
+        5272.0,
+        null
+      ],
+      "Pretax Income": [
+        6833.0,
+        7174.0,
+        6726.0,
+        6223.0,
+        6333.0,
+        null
+      ],
+      "Income Tax Expense": [
+        1205.0,
+        1153.0,
+        873.0,
+        1133.0,
+        1061.0,
+        null
+      ],
+      "EPS (Basic)": [
+        2.97,
+        3.15,
+        3.03,
+        2.62,
+        2.69,
+        null
+      ],
+      "Selling, General & Administrative": [
+        1398.0,
+        1233.0,
+        1133.0,
+        1376.0,
+        1090.0,
+        null
+      ],
+      "Diluted Shares Outstanding": [
+        2105.8,
+        2141.04,
+        2159.45,
+        2173.0,
+        2187.0,
+        null
+      ],
+      "Basic Shares Outstanding": [
+        1880.8,
+        1899.04,
+        1913.45,
+        1924.0,
+        1937.0,
+        null
+      ]
+    }
+  },
+  "NEM": {
+    "quarters": [
+      "Q2 2026",
+      "Q1 2026",
+      "Q4 2025",
+      "Q3 2025",
+      "Q2 2025",
+      "Q1 2025",
+      "Q4 2024"
+    ],
+    "metrics": {
+      "Revenue": [
+        6118.0,
+        7307.0,
+        6818.0,
+        5524.0,
+        5317.0,
+        null,
+        null
+      ],
+      "Gross Profit": [
+        3426.0,
+        4738.0,
+        4126.0,
+        2930.0,
+        2696.0,
+        null,
+        null
+      ],
+      "Operating Income": [
+        3155.0,
+        4485.0,
+        3974.0,
+        2616.0,
+        2417.0,
+        null,
+        null
+      ],
+      "Net Income": [
+        2202.0,
+        3262.0,
+        1301.0,
+        1832.0,
+        2061.0,
+        null,
+        null
+      ],
+      "EPS (Diluted)": [
+        2.06,
+        3.01,
+        1.19,
+        1.67,
+        1.85,
+        null,
+        null
+      ],
+      "Net Interest Income": [
+        52.0,
+        45.0,
+        30.0,
+        4.0,
+        -11.0,
+        null,
+        null
+      ],
+      "Interest Income on Loans": [
+        87.0,
+        84.0,
+        63.0,
+        56.0,
+        54.0,
+        null,
+        null
+      ],
+      "Interest Paid on Deposits": [
+        35.0,
+        39.0,
+        33.0,
+        52.0,
+        65.0,
+        null,
+        null
+      ],
+      "Net Income to Common": [
+        2202.0,
+        3262.0,
+        1301.0,
+        1832.0,
+        2061.0,
+        null,
+        null
+      ],
+      "Pretax Income": [
+        2999.0,
+        4583.0,
+        3246.0,
+        2507.0,
+        3118.0,
+        null,
+        null
+      ],
+      "Income Tax Expense": [
+        952.0,
+        1404.0,
+        2070.0,
+        787.0,
+        1092.0,
+        null,
+        null
+      ],
+      "EPS (Basic)": [
+        2.07,
+        3.01,
+        1.19,
+        1.67,
+        1.86,
+        null,
+        null
+      ],
+      "Selling, General & Administrative": [
+        74.0,
+        79.0,
+        91.0,
+        86.0,
+        95.0,
+        null,
+        null
+      ],
+      "Diluted Shares Outstanding": [
+        1067.0,
+        1087.0,
+        1094.0,
+        1100.0,
+        1112.0,
+        null,
+        null
+      ],
+      "Basic Shares Outstanding": [
+        1065.0,
+        1085.0,
+        1090.0,
+        1097.0,
+        1110.0,
+        null,
+        null
+      ]
+    }
+  },
+  "RTX": {
+    "quarters": [
+      "Q2 2026",
+      "Q1 2026",
+      "Q4 2025",
+      "Q3 2025",
+      "Q2 2025"
+    ],
+    "metrics": {
+      "Revenue": [
+        24708.0,
+        22076.0,
+        24238.0,
+        22478.0,
+        21581.0
+      ],
+      "Gross Profit": [
+        5133.0,
+        4594.0,
+        4717.0,
+        4580.0,
+        4376.0
+      ],
+      "Operating Income": [
+        2811.0,
+        2555.0,
+        2596.0,
+        2523.0,
+        2146.0
+      ],
+      "Net Income": [
+        2139.0,
+        2059.0,
+        1622.0,
+        1918.0,
+        1657.0
+      ],
+      "EPS (Diluted)": [
+        1.57,
+        1.51,
+        1.19,
+        1.41,
+        1.22
+      ],
+      "Net Interest Income": [
+        -395.0,
+        -382.0,
+        -397.0,
+        -437.0,
+        -452.0
+      ],
+      "Interest Income on Loans": [
+        33.0,
+        24.0,
+        -27.0,
+        46.0,
+        28.0
+      ],
+      "Interest Paid on Deposits": [
+        428.0,
+        406.0,
+        370.0,
+        483.0,
+        480.0
+      ],
+      "Net Income to Common": [
+        2139.0,
+        2059.0,
+        1622.0,
+        1918.0,
+        1657.0
+      ],
+      "Pretax Income": [
+        2742.0,
+        2520.0,
+        2297.0,
+        2438.0,
+        2040.0
+      ],
+      "Income Tax Expense": [
+        493.0,
+        363.0,
+        584.0,
+        432.0,
+        315.0
+      ],
+      "EPS (Basic)": [
+        1.58,
+        1.53,
+        1.21,
+        1.43,
+        1.24
+      ],
+      "Selling, General & Administrative": [
+        1658.0,
+        1476.0,
+        1638.0,
+        1436.0,
+        1573.0
+      ],
+      "Diluted Shares Outstanding": [
+        1365.0,
+        1364.6,
+        1361.7,
+        1358.4,
+        1354.0
+      ],
+      "Basic Shares Outstanding": [
+        1350.7,
+        1348.0,
+        1344.9,
+        1343.1,
+        1340.6
+      ]
+    }
+  },
+  "LMT": {
+    "quarters": [
+      "Q2 2026",
+      "Q1 2026",
+      "Q4 2025",
+      "Q3 2025",
+      "Q2 2025"
+    ],
+    "metrics": {
+      "Revenue": [
+        20063.0,
+        18021.0,
+        20321.0,
+        18609.0,
+        18155.0
+      ],
+      "Gross Profit": [
+        2446.0,
+        2078.0,
+        2322.0,
+        2240.0,
+        734.0
+      ],
+      "Operating Income": [
+        2479.0,
+        2063.0,
+        2331.0,
+        2280.0,
+        748.0
+      ],
+      "Net Income": [
+        1836.0,
+        1488.0,
+        1344.0,
+        1619.0,
+        342.0
+      ],
+      "EPS (Diluted)": [
+        7.94,
+        6.44,
+        5.8,
+        6.95,
+        1.46
+      ],
+      "Net Interest Income": [
+        -266.0,
+        -269.0,
+        -290.0,
+        -286.0,
+        -274.0
+      ],
+      "Interest Paid on Deposits": [
+        266.0,
+        269.0,
+        290.0,
+        286.0,
+        274.0
+      ],
+      "Net Income to Common": [
+        1836.0,
+        1488.0,
+        1344.0,
+        1619.0,
+        342.0
+      ],
+      "Pretax Income": [
+        2178.0,
+        1774.0,
+        1531.0,
+        1938.0,
+        417.0
+      ],
+      "Income Tax Expense": [
+        342.0,
+        286.0,
+        187.0,
+        319.0,
+        75.0
+      ],
+      "EPS (Basic)": [
+        7.98,
+        6.47,
+        5.82,
+        6.98,
+        1.46
+      ],
+      "Salaries and Employee Benefits": [
+        null,
+        null,
+        null,
+        null,
+        99.0
+      ],
+      "Selling, General & Administrative": [
+        null,
+        null,
+        null,
+        null,
+        99.0
+      ],
+      "Diluted Shares Outstanding": [
+        231.1,
+        231.1,
+        231.9,
+        232.8,
+        234.3
+      ],
+      "Basic Shares Outstanding": [
+        230.2,
+        229.9,
+        230.9,
+        231.9,
+        233.5
+      ]
+    }
+  },
+  "INTC": {
+    "quarters": [
+      "Q2 2026",
+      "Q1 2026",
+      "Q4 2025",
+      "Q3 2025",
+      "Q2 2025"
+    ],
+    "metrics": {
+      "Revenue": [
+        16128.0,
+        13577.0,
+        13674.0,
+        13653.0,
+        12859.0
+      ],
+      "Gross Profit": [
+        6509.0,
+        5347.0,
+        4943.0,
+        5218.0,
+        3542.0
+      ],
+      "Operating Income": [
+        1966.0,
+        934.0,
+        550.0,
+        858.0,
+        -1286.0
+      ],
+      "Net Income": [
+        -11033.0,
+        -3728.0,
+        -591.0,
+        4063.0,
+        -2918.0
+      ],
+      "EPS (Diluted)": [
+        -2.16,
+        -0.73,
+        -0.12,
+        0.9,
+        -0.67
+      ],
+      "Net Interest Income": [
+        -47.0,
+        352.0,
+        186.0,
+        -189.0,
+        -189.0
+      ],
+      "Interest Income on Loans": [
+        334.0,
+        333.0,
+        325.0,
+        228.0,
+        210.0
+      ],
+      "Interest Paid on Deposits": [
+        321.0,
+        264.0,
+        283.0,
+        282.0,
+        227.0
+      ],
+      "Net Income to Common": [
+        -11033.0,
+        -3728.0,
+        -591.0,
+        4063.0,
+        -2918.0
+      ],
+      "Pretax Income": [
+        -10819.0,
+        -3946.0,
+        338.0,
+        4574.0,
+        -2769.0
+      ],
+      "Income Tax Expense": [
+        29.0,
+        335.0,
+        671.0,
+        304.0,
+        255.0
+      ],
+      "EPS (Basic)": [
+        -2.16,
+        -0.73,
+        -0.12,
+        0.9,
+        -0.67
+      ],
+      "Selling, General & Administrative": [
+        1175.0,
+        1038.0,
+        1174.0,
+        1129.0,
+        1144.0
+      ],
+      "Diluted Shares Outstanding": [
+        5104.0,
+        5083.0,
+        4856.0,
+        4531.0,
+        4369.0
+      ],
+      "Basic Shares Outstanding": [
+        5104.0,
+        5083.0,
+        4856.0,
+        4514.0,
+        4369.0
+      ]
+    }
+  },
+  "GOOGL": {
+    "quarters": [
+      "Q2 2026",
+      "Q1 2026",
+      "Q4 2025",
+      "Q3 2025",
+      "Q2 2025",
+      "Q1 2025",
+      "Q4 2024"
+    ],
+    "metrics": {
+      "Revenue": [
+        119796.0,
+        109896.0,
+        113829.0,
+        102346.0,
+        96428.0,
+        null,
+        null
+      ],
+      "Gross Profit": [
+        73853.0,
+        68625.0,
+        68062.0,
+        60977.0,
+        57389.0,
+        null,
+        null
+      ],
+      "Operating Income": [
+        40770.0,
+        39696.0,
+        35934.0,
+        31228.0,
+        31271.0,
+        null,
+        null
+      ],
+      "Net Income": [
+        112193.0,
+        62578.0,
+        34455.0,
+        34979.0,
+        28196.0,
+        null,
+        null
+      ],
+      "EPS (Diluted)": [
+        9.11,
+        5.11,
+        2.82,
+        2.87,
+        2.31,
+        null,
+        null
+      ],
+      "Net Interest Income": [
+        152.0,
+        848.0,
+        911.0,
+        933.0,
+        789.0,
+        null,
+        null
+      ],
+      "Interest Income on Loans": [
+        1430.0,
+        1381.0,
+        1209.0,
+        1076.0,
+        1050.0,
+        null,
+        null
+      ],
+      "Interest Paid on Deposits": [
+        1278.0,
+        533.0,
+        298.0,
+        143.0,
+        261.0,
+        null,
+        null
+      ],
+      "Net Income to Common": [
+        112107.0,
+        62578.0,
+        34455.0,
+        34979.0,
+        28196.0,
+        null,
+        null
+      ],
+      "Pretax Income": [
+        138753.0,
+        77412.0,
+        39117.0,
+        43987.0,
+        33933.0,
+        null,
+        null
+      ],
+      "Income Tax Expense": [
+        26560.0,
+        14834.0,
+        4662.0,
+        9008.0,
+        5737.0,
+        null,
+        null
+      ],
+      "EPS (Basic)": [
+        9.23,
+        5.17,
+        2.85,
+        2.89,
+        2.33,
+        null,
+        null
+      ],
+      "Selling, General & Administrative": [
+        14864.0,
+        11897.0,
+        13556.0,
+        14598.0,
+        12310.0,
+        null,
+        null
+      ],
+      "Diluted Shares Outstanding": [
+        12309.0,
+        12238.0,
+        12228.0,
+        12203.0,
+        12198.0,
+        null,
+        null
+      ],
+      "Basic Shares Outstanding": [
+        12151.0,
+        12099.0,
+        12073.0,
+        12086.0,
+        12122.0,
+        null,
+        null
+      ]
+    }
   }
 };
 const analysisData = saAnalysisData;

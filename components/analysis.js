@@ -4,22 +4,58 @@ let activeAnalysisStock = 'JPM';
 let activeChartMetrics = ['Net Interest Income', 'Revenue', 'Net Income', 'EPS (Diluted)', 'Provision for Loan Losses'];
 let analysisSearchQuery = '';
 
+const DEFAULT_STOCKS = ['JPM', 'AMZN', 'NVDA', 'CRWD', 'BAC', 'TSLA', 'BA', 'V', 'NEM', 'RTX', 'LMT', 'INTC', 'GOOGL', 'SLV', 'QQQM'];
+
+function getUserStocks() {
+  try {
+    const saved = localStorage.getItem('sa_user_stocks');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    }
+  } catch (e) {}
+  return [...DEFAULT_STOCKS];
+}
+
+function setUserStocks(stocks) {
+  try {
+    localStorage.setItem('sa_user_stocks', JSON.stringify(stocks));
+  } catch (e) {}
+}
+
 function renderAnalysis(container) {
-  const stocks = Object.keys(saAnalysisData);
+  const userStocks = getUserStocks();
+  if (!userStocks.includes(activeAnalysisStock)) {
+    activeAnalysisStock = userStocks[0] || 'JPM';
+  }
 
   container.innerHTML = `
     <div class="page-header">
       <div>
-        <h2>🔬 Stock Analysis (SeekingAlpha Data)</h2>
-        <p>งบการเงินรายไตรมาส — ครบถ้วนตาม Sheet JPM SA & JPM SA (Graph)</p>
+        <h2>🔬 Stock Analysis</h2>
+        <p>งบการเงินรายไตรมาส — ครบถ้วนตาม SeekingAlpha & Yahoo Finance Data</p>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;">
+        <button class="pill active" style="background:var(--accent-grad);color:#000;font-weight:700" onclick="promptAddStock()">
+          ➕ Add Stock
+        </button>
       </div>
     </div>
 
-    <div class="tab-bar">
-      ${stocks.map(s => `
-        <button class="tab-btn${s === activeAnalysisStock ? ' active' : ''}"
-          onclick="switchAnalysisStock('${s}',this)">${s}</button>
-      `).join('')}
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px;flex-wrap:wrap;">
+      <div class="tab-bar" style="margin-bottom:0;flex:1;overflow-x:auto;">
+        ${userStocks.map(s => `
+          <div style="display:inline-flex;align-items:center;">
+            <button class="tab-btn${s === activeAnalysisStock ? ' active' : ''}"
+              onclick="switchAnalysisStock('${s}',this)">${s}</button>
+          </div>
+        `).join('')}
+      </div>
+      ${userStocks.length > 1 ? `
+        <button class="pill" style="border-color:rgba(255,77,109,0.3);color:var(--red);font-size:12px;" onclick="removeActiveStock()">
+          🗑️ Remove ${activeAnalysisStock}
+        </button>
+      ` : ''}
     </div>
 
     <div id="analysis-content"></div>
@@ -31,20 +67,62 @@ function renderAnalysis(container) {
 function switchAnalysisStock(stock, btn) {
   activeAnalysisStock = stock;
   document.querySelectorAll('.tab-bar .tab-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
+  if (btn) btn.classList.add('active');
 
   // Set smart default chart metrics per stock
   if (stock === 'JPM' || stock === 'BAC') {
     activeChartMetrics = ['Net Interest Income', 'Revenue', 'Net Income', 'EPS (Diluted)', 'Provision for Loan Losses'];
-  } else if (stock === 'AMZN') {
-    activeChartMetrics = ['Revenue', 'Gross Profit', 'Operating Income', 'Net Income', 'EPS (Diluted)'];
-  } else if (stock === 'NVDA') {
+  } else if (stock === 'AMZN' || stock === 'NVDA' || stock === 'CRWD' || stock === 'GOOGL' || stock === 'TSLA') {
     activeChartMetrics = ['Revenue', 'Gross Profit', 'Operating Income', 'Net Income', 'EPS (Diluted)'];
   } else {
-    activeChartMetrics = ['Revenue', 'Gross Profit', 'Operating Income', 'Net Income'];
+    activeChartMetrics = ['Revenue', 'Operating Income', 'Net Income', 'EPS (Diluted)'];
   }
 
-  renderAnalysisContent(stock);
+  // Re-render whole analysis view to update title/remove button state
+  renderAnalysis(document.getElementById('vp-analysis'));
+}
+
+function promptAddStock() {
+  const symbol = prompt("กรอกชื่อหุ้นที่ต้องการเพิ่ม (e.g. AAPL, MSFT, META, TSLA):");
+  if (!symbol) return;
+  const cleanSym = symbol.trim().toUpperCase();
+  if (!cleanSym) return;
+
+  const userStocks = getUserStocks();
+  if (!userStocks.includes(cleanSym)) {
+    userStocks.push(cleanSym);
+    setUserStocks(userStocks);
+  }
+
+  // If data doesn't exist yet, initialize a clean template
+  if (!saAnalysisData[cleanSym]) {
+    saAnalysisData[cleanSym] = {
+      quarters: ["Q2 2026", "Q1 2026", "Q4 2025", "Q3 2025"],
+      metrics: {
+        "Revenue": [None, None, None, None],
+        "Net Income": [None, None, None, None],
+        "EPS (Diluted)": [None, None, None, None]
+      }
+    };
+  }
+
+  activeAnalysisStock = cleanSym;
+  renderAnalysis(document.getElementById('vp-analysis'));
+}
+
+function removeActiveStock() {
+  const userStocks = getUserStocks();
+  if (userStocks.length <= 1) {
+    alert("ต้องมีอย่างน้อย 1 หุ้นในรายการ");
+    return;
+  }
+
+  if (confirm(`คุณต้องการลบ ${activeAnalysisStock} ออกจากรายการหรือไม่?`)) {
+    const updated = userStocks.filter(s => s !== activeAnalysisStock);
+    setUserStocks(updated);
+    activeAnalysisStock = updated[0];
+    renderAnalysis(document.getElementById('vp-analysis'));
+  }
 }
 
 function toggleChartMetric(metric) {
@@ -122,8 +200,8 @@ function renderAnalysisContent(stock) {
     <div class="card">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:12px;">
         <div>
-          <div class="card-title" style="margin-bottom:2px">📋 ตารางงบการเงินรายไตรมาส (20 ไตรมาส)</div>
-          <p style="font-size:12px;color:var(--text-secondary)">ข้อมูลย้อนหลัง ${quarters.length} ไตรมาส (SeekingAlpha Data)</p>
+          <div class="card-title" style="margin-bottom:2px">📋 ตารางงบการเงินรายไตรมาส</div>
+          <p style="font-size:12px;color:var(--text-secondary)">ข้อมูลย้อนหลัง ${quarters.length} ไตรมาส (Yahoo Finance & Seeking Alpha)</p>
         </div>
         <div class="search-box">
           <span class="search-icon">🔍</span>
@@ -134,6 +212,28 @@ function renderAnalysisContent(stock) {
 
       <div class="table-wrap" style="overflow-x:auto;max-height:550px">
         <div id="sa-table-container"></div>
+      </div>
+    </div>
+
+    <!-- Data Reference Credit Footer -->
+    <div style="margin-top:20px;padding:14px 18px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--text-secondary);">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:16px">📌</span>
+        <div>
+          <strong style="color:var(--text-primary)">Data Reference Credits &amp; Live Feeds:</strong>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:1px">Yahoo Finance API, Seeking Alpha Income Statements, TradingView Charts</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <a href="https://finance.yahoo.com/quote/${stock}/financials/" target="_blank" rel="noopener noreferrer" class="btn-link-action" style="font-size:11px;padding:4px 12px;">
+          🔗 Yahoo Finance ${stock} ↗
+        </a>
+        <a href="https://seekingalpha.com/symbol/${stock}/income-statement" target="_blank" rel="noopener noreferrer" class="btn-link-action" style="font-size:11px;padding:4px 12px;background:rgba(0,153,255,0.1);color:var(--accent-2);border-color:rgba(0,153,255,0.3)">
+          🔗 Seeking Alpha ${stock} ↗
+        </a>
+        <a href="https://www.tradingview.com/chart/?symbol=${stock}" target="_blank" rel="noopener noreferrer" class="btn-link-action" style="font-size:11px;padding:4px 12px;background:rgba(255,183,77,0.1);color:var(--orange);border-color:rgba(255,183,77,0.3)">
+          📈 TradingView ${stock} ↗
+        </a>
       </div>
     </div>
   `;
@@ -157,7 +257,6 @@ function renderSAHighlights(stock, data) {
   if (metrics['Gross Profit']) highlights.push({ label: 'Gross Profit', key: 'Gross Profit', prefix: '$', suffix: 'M' });
   if (metrics['Operating Income']) highlights.push({ label: 'Operating Income', key: 'Operating Income', prefix: '$', suffix: 'M' });
 
-  // Limit to top 4 cards
   const cards = highlights.slice(0, 4);
 
   return cards.map(c => {

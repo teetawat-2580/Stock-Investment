@@ -3,22 +3,84 @@ let activeEventSubTab = 'calendar';
 let activeEventStock = 'all';
 let activeLinkStock = 'all';
 let linkSearchQuery = '';
+let editingEventId = null;
+
+// ── Custom Events (Local Storage) ─────────────────────────────
+function getCustomEvents() {
+  try {
+    const saved = localStorage.getItem('custom_user_events');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed)) return parsed;
+    }
+  } catch (e) {}
+  return [];
+}
+
+function saveCustomEvents(events) {
+  try {
+    localStorage.setItem('custom_user_events', JSON.stringify(events));
+  } catch (e) {}
+}
 
 function renderEvents(container) {
   container.innerHTML = `
     <div class="page-header">
       <div>
         <h2>📅 Events & Links</h2>
-        <p>เหตุการณ์สำคัญ และ ลิงก์ข้อมูลทางการ (Sheet EVENT Link)</p>
+        <p>เหตุการณ์สำคัญ ข่าวสารตลาด และบันทึกส่วนตัว (TradingView Links & Personal Notes)</p>
+      </div>
+      <button class="pill active" style="background:var(--accent-grad);color:#000;font-weight:700" onclick="toggleEventNoteForm()">
+        ✏️ + เพิ่มบันทึกเหตุการณ์ (Add Note)
+      </button>
+    </div>
+
+    <!-- Personal Note Input Form (Hidden by default) -->
+    <div id="event-note-form-card" class="card" style="display:none;margin-bottom:20px;border-color:var(--accent-1)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+        <div class="card-title" id="event-form-title" style="margin-bottom:0;color:var(--accent-1)">➕ เพิ่มบันทึกเหตุการณ์ส่วนตัว</div>
+        <button class="pill" style="font-size:11px;padding:2px 10px;" onclick="toggleEventNoteForm(false)">✕ ปิด</button>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px;">
+        <div>
+          <label style="font-size:11px;color:var(--text-muted);display:block;margin-bottom:4px">ชื่อหุ้น (Ticker):</label>
+          <input type="text" id="note-stock-input" placeholder="e.g. JPM, TSLA, NVDA" class="search-box" style="width:100%;padding:8px 12px;background:var(--bg-base);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);">
+        </div>
+        <div>
+          <label style="font-size:11px;color:var(--text-muted);display:block;margin-bottom:4px">วันที่ (Date):</label>
+          <input type="date" id="note-date-input" class="search-box" style="width:100%;padding:8px 12px;background:var(--bg-base);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);">
+        </div>
+        <div>
+          <label style="font-size:11px;color:var(--text-muted);display:block;margin-bottom:4px">ประเภท (Type):</label>
+          <select id="note-type-input" style="width:100%;padding:8px 12px;background:var(--bg-base);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-family:inherit;">
+            <option value="NOTE">NOTE (บันทึกส่วนตัว)</option>
+            <option value="FACT">FACT (ข้อเท็จจริง)</option>
+            <option value="EST">EST (ประมาณการ)</option>
+          </select>
+        </div>
+      </div>
+      <div style="margin-bottom:12px;">
+        <label style="font-size:11px;color:var(--text-muted);display:block;margin-bottom:4px">หัวข้อเหตุการณ์ (Event Title):</label>
+        <input type="text" id="note-title-input" placeholder="e.g. ประกาศงบการเงิน Q2, ดอกเบี้ย FED, จุดเข้าซื้อสำคัญ" style="width:100%;padding:8px 12px;background:var(--bg-base);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);">
+      </div>
+      <div style="margin-bottom:14px;">
+        <label style="font-size:11px;color:var(--text-muted);display:block;margin-bottom:4px">หมายเหตุเพิ่มเติม (Remarks):</label>
+        <input type="text" id="note-remark-input" placeholder="e.g. แนวรับ 180$, TradingView chart note..." style="width:100%;padding:8px 12px;background:var(--bg-base);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);">
+      </div>
+      <div style="display:flex;gap:10px;justify-content:flex-end;">
+        <button class="pill" onclick="toggleEventNoteForm(false)">ยกเลิก</button>
+        <button class="pill active" style="background:var(--accent-1);color:#000;font-weight:700" onclick="saveEventNote()">
+          💾 บันทึกข้อมูล
+        </button>
       </div>
     </div>
 
     <div class="tab-bar" style="margin-bottom:20px;">
       <button class="tab-btn${activeEventSubTab === 'calendar' ? ' active' : ''}" onclick="switchEventSubTab('calendar', this)">
-        📅 Events Calendar
+        📅 Events Calendar & Notes
       </button>
       <button class="tab-btn${activeEventSubTab === 'links' ? ' active' : ''}" onclick="switchEventSubTab('links', this)">
-        🔗 Sheet EVENT Link
+        🔗 Sheet EVENT Link & TradingView
       </button>
     </div>
 
@@ -46,9 +108,99 @@ function renderEventSubTabContent() {
   }
 }
 
+function toggleEventNoteForm(show) {
+  const form = document.getElementById('event-note-form-card');
+  if (!form) return;
+
+  if (show === undefined) {
+    show = form.style.display === 'none';
+  }
+
+  if (show) {
+    editingEventId = null;
+    document.getElementById('event-form-title').textContent = '➕ เพิ่มบันทึกเหตุการณ์ส่วนตัว';
+    document.getElementById('note-stock-input').value = '';
+    document.getElementById('note-date-input').value = new Date().toISOString().split('T')[0];
+    document.getElementById('note-type-input').value = 'NOTE';
+    document.getElementById('note-title-input').value = '';
+    document.getElementById('note-remark-input').value = '';
+    form.style.display = 'block';
+  } else {
+    form.style.display = 'none';
+  }
+}
+
+function editEventNote(id) {
+  const customEvents = getCustomEvents();
+  const item = customEvents.find(e => e.id === id);
+  if (!item) return;
+
+  editingEventId = id;
+  const form = document.getElementById('event-note-form-card');
+  if (form) {
+    document.getElementById('event-form-title').textContent = '✏️ แก้ไขบันทึกเหตุการณ์';
+    document.getElementById('note-stock-input').value = item.stock || '';
+    document.getElementById('note-date-input').value = item.date || '';
+    document.getElementById('note-type-input').value = item.type || 'NOTE';
+    document.getElementById('note-title-input').value = item.event || '';
+    document.getElementById('note-remark-input').value = item.remark || '';
+    form.style.display = 'block';
+  }
+}
+
+function deleteEventNote(id) {
+  if (confirm("คุณต้องการลบบันทึกเหตุการณ์นี้ใช่หรือไม่?")) {
+    let customEvents = getCustomEvents();
+    customEvents = customEvents.filter(e => e.id !== id);
+    saveCustomEvents(customEvents);
+    renderEventSubTabContent();
+  }
+}
+
+function saveEventNote() {
+  const stock = document.getElementById('note-stock-input').value.trim().toUpperCase();
+  const date = document.getElementById('note-date-input').value;
+  const type = document.getElementById('note-type-input').value;
+  const title = document.getElementById('note-title-input').value.trim();
+  const remark = document.getElementById('note-remark-input').value.trim();
+
+  if (!stock || !title) {
+    alert("กรุณากรอกชื่อหุ้น และ หัวข้อเหตุการณ์");
+    return;
+  }
+
+  let customEvents = getCustomEvents();
+
+  if (editingEventId) {
+    customEvents = customEvents.map(e => {
+      if (e.id === editingEventId) {
+        return { ...e, stock, date, type, event: title, remark };
+      }
+      return e;
+    });
+  } else {
+    const newNote = {
+      id: 'evt_' + Date.now(),
+      stock,
+      date: date || new Date().toISOString().split('T')[0],
+      type,
+      event: title,
+      remark,
+      isCustom: true
+    };
+    customEvents.push(newNote);
+  }
+
+  saveCustomEvents(customEvents);
+  toggleEventNoteForm(false);
+  renderEventSubTabContent();
+}
+
 // ── 1. Calendar Sub-tab ──────────────────────────────────────
 function renderCalendarSubTab(container) {
-  const stocks = ['all', ...new Set(eventsData.map(e => e.stock))];
+  const customEvents = getCustomEvents();
+  const allEvents = [...customEvents, ...eventsData];
+  const stocks = ['all', ...new Set(allEvents.map(e => e.stock))];
 
   container.innerHTML = `
     <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;flex-wrap:wrap;">
@@ -59,6 +211,7 @@ function renderCalendarSubTab(container) {
           </button>`).join('')}
       </div>
       <div style="display:flex;gap:10px;align-items:center;margin-left:auto;">
+        <span class="badge badge-purple">● NOTE (ส่วนตัว)</span>
         <span class="badge badge-teal">● FACT</span>
         <span class="badge badge-orange">● EST</span>
       </div>
@@ -74,24 +227,42 @@ function renderEventTimeline(stockFilter) {
   const tl = document.getElementById('events-timeline');
   if (!tl) return;
 
-  const items = eventsData
+  const customEvents = getCustomEvents();
+  const allEvents = [...customEvents, ...eventsData];
+
+  const items = allEvents
     .filter(e => stockFilter === 'all' || e.stock === stockFilter)
     .sort((a, b) => new Date(b.date) - new Date(a.date));
 
   tl.innerHTML = items.map(e => {
     const isFact = e.type === 'FACT';
+    const isNote = e.type === 'NOTE' || e.isCustom;
     const stockColors = {
-      AMZN: '#ff9900', JPM: '#0052d4', NVDA: '#76b900', CRWD: '#ee3124', SPCX: '#9c27b0', BA: '#003399', TSLA: '#e82127'
+      AMZN: '#ff9900', JPM: '#0052d4', NVDA: '#76b900', CRWD: '#ee3124', SPCX: '#9c27b0',
+      BA: '#003399', TSLA: '#e82127', GOOGL: '#4285f4', V: '#1a1f71', NEM: '#eaaa00'
     };
     const color = stockColors[e.stock] || 'var(--accent-1)';
+    const badgeClass = isNote ? 'badge-purple' : (isFact ? 'badge-teal' : 'badge-orange');
+
     return `
       <div class="timeline-item">
-        <div class="timeline-dot ${isFact ? 'fact' : 'est'}" style="background:${isFact ? 'var(--accent-1)' : 'var(--orange)'}"></div>
+        <div class="timeline-dot" style="background:${isNote ? 'var(--purple)' : (isFact ? 'var(--accent-1)' : 'var(--orange)')}"></div>
         <div class="timeline-card">
-          <div class="timeline-meta">
-            <span style="color:${color};font-weight:700">${e.stock}</span>
-            <span>${formatDate(e.date)}</span>
-            <span class="badge ${isFact ? 'badge-teal' : 'badge-orange'}" style="font-size:10px">${e.type}</span>
+          <div class="timeline-meta" style="justify-content:space-between;align-items:center;">
+            <div style="display:flex;gap:10px;align-items:center;">
+              <span style="color:${color};font-weight:700">${e.stock}</span>
+              <span>${formatDate(e.date)}</span>
+              <span class="badge ${badgeClass}" style="font-size:10px">${e.type}</span>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <a href="https://www.tradingview.com/chart/?symbol=${e.stock}" target="_blank" rel="noopener noreferrer" class="btn-link-action" style="font-size:10px;padding:2px 8px;background:rgba(255,183,77,0.1);color:var(--orange);border-color:rgba(255,183,77,0.3)">
+                📈 Chart ↗
+              </a>
+              ${e.isCustom ? `
+                <button class="pill" style="font-size:10px;padding:2px 8px;" onclick="editEventNote('${e.id}')">✏️</button>
+                <button class="pill" style="font-size:10px;padding:2px 8px;color:var(--red);border-color:rgba(255,77,109,0.3);" onclick="deleteEventNote('${e.id}')">🗑️</button>
+              ` : ''}
+            </div>
           </div>
           <div class="timeline-event">${e.event}</div>
           ${e.remark ? `<div class="timeline-remark">📌 ${e.remark}</div>` : ''}
@@ -185,14 +356,21 @@ function renderEventLinksContent() {
           <div class="event-link-title" style="margin-top:8px">${item.event || '—'}</div>
           ${item.purpose && item.purpose !== 'FACT' ? `<div class="event-link-purpose" style="margin-top:6px">💡 ${item.purpose}</div>` : ''}
         </div>
-        <div style="margin-top:12px;display:flex;align-items:center;justify-content:space-between">
-          ${hasUrl ? `
-            <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="btn-link-action">
-              🔗 เปิดลิงก์ ↗
-            </a>
-          ` : `
-            <span class="badge badge-gray">ไม่มี URL</span>
-          `}
+        <div style="margin-top:12px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+            ${hasUrl ? `
+              <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="btn-link-action">
+                🔗 เปิดลิงก์ ↗
+              </a>
+            ` : `
+              <span class="badge badge-gray">ไม่มี URL</span>
+            `}
+            ${item.stock ? `
+              <a href="https://www.tradingview.com/chart/?symbol=${item.stock}" target="_blank" rel="noopener noreferrer" class="btn-link-action" style="background:rgba(255,183,77,0.1);color:var(--orange);border-color:rgba(255,183,77,0.3)">
+                📈 TradingView Chart ↗
+              </a>
+            ` : ''}
+          </div>
           <span style="font-size:11px;color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:180px">
             ${hasUrl ? item.url.replace(/^https?:\/\//, '') : ''}
           </span>
