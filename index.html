@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Stock Investment 2026 — แอปติดตามพอร์ตการลงทุน หุ้นไทยและ US">
+  <title>Stock Investment 2026</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+
+  <!-- Design System -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Data -->
+  <script src="data/portfolio.js"></script>
+  <script src="data/focuslist.js"></script>
+  <script src="data/tradelog.js"></script>
+  <script src="data/events.js"></script>
+  <script src="data/stocks.js"></script>
+  <script src="data/analysis.js"></script>
+  <script src="data/currency.js"></script>
+</head>
+<body>
+
+  <!-- ── Sidebar ───────────────────────────────── -->
+  <nav id="sidebar" aria-label="Main navigation"></nav>
+
+  <!-- ── Main ─────────────────────────────────── -->
+  <div id="main">
+
+    <!-- Topbar -->
+    <header id="topbar">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span style="font-size:20px">📈</span>
+        <span class="topbar-title" id="topbar-title">Dashboard</span>
+      </div>
+      <div class="topbar-date">
+        <div class="live-dot" aria-hidden="true"></div>
+        <span id="topbar-date">--</span>
+      </div>
+    </header>
+
+    <!-- Views -->
+    <main id="view" role="main" aria-live="polite"></main>
+
+  </div>
+
+  <!-- ── Components ─────────────────────────────── -->
+  <script src="components/portfolio.js"></script>
+  <script src="components/watchlist.js"></script>
+  <script src="components/tradelog.js"></script>
+  <script src="components/events.js"></script>
+  <script src="components/fundamentals.js"></script>
+  <script src="components/analysis.js"></script>
+  <script src="components/currency.js"></script>
+
+  <!-- ── App Router ─────────────────────────────── -->
+  <script src="app.js"></script>
+
+</body>
+</html>
