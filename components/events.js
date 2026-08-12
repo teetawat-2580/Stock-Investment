@@ -6,6 +6,10 @@ let linkSearchQuery = '';
 let editingEventId = null;
 let eventPriceChart = null;
 
+let chartZoomRange = '3M'; // '1M', '3M', '6M', 'ALL', or custom number of days
+let customZoomDays = null;
+let selectedNewsDate = null;
+
 const DEFAULT_EVENT_STOCKS = ['JPM', 'AMZN', 'NVDA', 'TSLA', 'BA', 'GOOGL', 'BAC', 'V', 'INTC', 'CRWD', 'NEM', 'RTX', 'LMT'];
 
 function getUserEventStocks() {
@@ -52,7 +56,7 @@ function renderEvents(container) {
     <div class="page-header">
       <div>
         <h2>📅 Events & News Timeline</h2>
-        <p>เหตุการณ์สำคัญ ข่าวสารพร้อมกราฟราคาหุ้น (News-Correlated Stock Price Graph)</p>
+        <p>เหตุการณ์สำคัญ ข่าวสารพร้อมกราฟราคาหุ้น (News-Correlated Stock Price Graph &amp; Zoom)</p>
       </div>
       <div style="display:flex;gap:10px;align-items:center;">
         <button class="pill active" style="background:var(--accent-grad);color:#000;font-weight:700" onclick="promptAddEventStock()">
@@ -130,6 +134,7 @@ function promptAddEventStock() {
     setUserEventStocks(userStocks);
   }
   activeEventStock = cleanSym;
+  selectedNewsDate = null;
   renderEvents(document.getElementById('vp-events'));
 }
 
@@ -144,6 +149,7 @@ function removeActiveEventStock() {
     const updated = userStocks.filter(s => s !== activeEventStock);
     setUserEventStocks(updated);
     activeEventStock = updated[0] || 'all';
+    selectedNewsDate = null;
     renderEvents(document.getElementById('vp-events'));
   }
 }
@@ -261,6 +267,9 @@ function renderCalendarSubTab(container) {
   const userStocks = getUserEventStocks();
   const stocks = ['all', ...userStocks];
 
+  const targetSymbol = (activeEventStock === 'all' ? 'JPM' : activeEventStock).toUpperCase();
+  const pricesMap = (typeof stockPricesData !== 'undefined' && stockPricesData[targetSymbol]) ? stockPricesData[targetSymbol] : null;
+
   container.innerHTML = `
     <!-- Stock Selection & Actions -->
     <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px;flex-wrap:wrap;">
@@ -281,18 +290,48 @@ function renderCalendarSubTab(container) {
       </div>
     </div>
 
-    <!-- News-Correlated Stock Price Graph -->
+    <!-- News-Correlated Stock Price Graph & Zoom Controls -->
     <div class="card" id="news-chart-card" style="margin-bottom:24px;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:12px;">
         <div>
-          <div class="card-title" style="margin-bottom:2px">📈 กราฟราคาหุ้นสัมพัทธ์กับข่าว (Stock Price &amp; News Correlation) — ${activeEventStock.toUpperCase()}</div>
-          <p style="font-size:12px;color:var(--text-secondary)">พอยต์บนเส้นกราฟระบุราคาหุ้น ณ วันที่ออกข่าว ชี้เมาส์เพื่อดูหัวข้อข่าว</p>
+          <div class="card-title" style="margin-bottom:2px">📈 กราฟราคาหุ้นสัมพัทธ์กับข่าว — ${targetSymbol}</div>
+          <p style="font-size:12px;color:var(--text-secondary)">คลิกจุดราคาบนกราฟเพื่อกรองข่าวสารวันนั้นทันที · ชี้เมาส์เพื่อดูหัวข้อข่าว</p>
+        </div>
+        
+        <!-- Zoom & Range Controls -->
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+          <span style="font-size:11px;color:var(--text-muted)">ช่วงเวลา:</span>
+          <button class="pill${chartZoomRange === '1M' ? ' active' : ''}" style="font-size:11px;padding:3px 10px;" onclick="setChartZoomRange('1M')">1M</button>
+          <button class="pill${chartZoomRange === '3M' ? ' active' : ''}" style="font-size:11px;padding:3px 10px;" onclick="setChartZoomRange('3M')">3M</button>
+          <button class="pill${chartZoomRange === '6M' ? ' active' : ''}" style="font-size:11px;padding:3px 10px;" onclick="setChartZoomRange('6M')">6M</button>
+          <button class="pill${chartZoomRange === 'ALL' ? ' active' : ''}" style="font-size:11px;padding:3px 10px;" onclick="setChartZoomRange('ALL')">ALL</button>
+          <span style="color:var(--border);margin:0 4px">|</span>
+          <button class="pill" style="font-size:11px;padding:3px 10px;" onclick="zoomChartFactor(0.7)">🔍 ➕ ซูมเข้า</button>
+          <button class="pill" style="font-size:11px;padding:3px 10px;" onclick="zoomChartFactor(1.4)">🔍 ➖ ซูมออก</button>
+          <button class="pill" style="font-size:11px;padding:3px 10px;" onclick="resetChartZoom()">🔄 รีเซ็ต</button>
         </div>
       </div>
-      <div class="chart-wrap" style="height:260px">
+
+      <div class="chart-wrap" style="height:280px">
         <canvas id="event-price-chart"></canvas>
       </div>
     </div>
+
+    <!-- Active Date Filter Banner (Shown when user clicks graph point) -->
+    ${selectedNewsDate ? `
+      <div style="background:rgba(0,212,170,0.12);border:1px solid var(--accent-1);border-radius:var(--radius-sm);padding:12px 18px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="font-size:18px">🎯</span>
+          <div>
+            <strong style="color:var(--accent-1);font-size:14px">กำลังกรองข่าวสาร ณ วันที่ ${formatDate(selectedNewsDate)} (${targetSymbol})</strong>
+            ${pricesMap && pricesMap[selectedNewsDate] ? `<span style="font-size:12px;color:var(--text-secondary);margin-left:10px">💰 ราคาปิดวันนั้น: $${formatNum(pricesMap[selectedNewsDate],2)}</span>` : ''}
+          </div>
+        </div>
+        <button class="pill active" style="font-size:12px;padding:4px 14px;background:var(--accent-1);color:#000;font-weight:700" onclick="clearSelectedNewsDate()">
+          ✕ แสดงข่าวทั้งหมด (ล้างตัวกรอง)
+        </button>
+      </div>
+    ` : ''}
 
     <!-- Events Timeline -->
     <div class="timeline" id="events-timeline"></div>
@@ -323,17 +362,59 @@ function renderCalendarSubTab(container) {
 
 function filterEvents(stock, btn) {
   activeEventStock = stock;
+  selectedNewsDate = null; // Clear date filter when switching stock
   document.querySelectorAll('#event-filter .pill').forEach(p => p.classList.remove('active'));
   if (btn) btn.classList.add('active');
 
-  // Update chart header title
   const chartTitle = document.querySelector('#news-chart-card .card-title');
   if (chartTitle) {
-    chartTitle.textContent = `📈 กราฟราคาหุ้นสัมพัทธ์กับข่าว (Stock Price & News Correlation) — ${stock.toUpperCase()}`;
+    chartTitle.textContent = `📈 กราฟราคาหุ้นสัมพัทธ์กับข่าว — ${stock.toUpperCase()}`;
   }
 
   renderEventPriceChart(stock);
   renderEventTimeline(stock);
+}
+
+function setChartZoomRange(range) {
+  chartZoomRange = range;
+  customZoomDays = null;
+  renderEventPriceChart(activeEventStock);
+}
+
+function zoomChartFactor(factor) {
+  const targetSymbol = (activeEventStock === 'all' ? 'JPM' : activeEventStock).toUpperCase();
+  const pricesMap = (typeof stockPricesData !== 'undefined' && stockPricesData[targetSymbol]) ? stockPricesData[targetSymbol] : null;
+  if (!pricesMap) return;
+
+  const totalPoints = Object.keys(pricesMap).length;
+  let currentCount = customZoomDays || (chartZoomRange === '1M' ? 22 : (chartZoomRange === '3M' ? 65 : totalPoints));
+  let newCount = Math.max(10, Math.min(totalPoints, Math.round(currentCount * factor)));
+
+  customZoomDays = newCount;
+  chartZoomRange = 'CUSTOM';
+  renderEventPriceChart(activeEventStock);
+}
+
+function resetChartZoom() {
+  chartZoomRange = '3M';
+  customZoomDays = null;
+  renderEventPriceChart(activeEventStock);
+}
+
+function selectNewsDate(date, symbol) {
+  selectedNewsDate = date;
+  renderCalendarSubTab(document.getElementById('events-subtab-container'));
+
+  // Scroll to timeline smoothly
+  const timelineEl = document.getElementById('events-timeline');
+  if (timelineEl) {
+    timelineEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+function clearSelectedNewsDate() {
+  selectedNewsDate = null;
+  renderCalendarSubTab(document.getElementById('events-subtab-container'));
 }
 
 function renderEventPriceChart(stockFilter) {
@@ -361,13 +442,23 @@ function renderEventPriceChart(stockFilter) {
     eventsByDate[e.date].push(e.event);
   });
 
-  const dates = Object.keys(pricesMap).sort();
+  let dates = Object.keys(pricesMap).sort();
+
+  // Apply zoom range / slicing
+  if (customZoomDays) {
+    dates = dates.slice(-customZoomDays);
+  } else if (chartZoomRange === '1M') {
+    dates = dates.slice(-22);
+  } else if (chartZoomRange === '3M') {
+    dates = dates.slice(-65);
+  }
+
   const prices = dates.map(d => pricesMap[d]);
 
-  // Point styling for dates with news
-  const pointRadii = dates.map(d => (eventsByDate[d] ? 6 : 2));
-  const pointColors = dates.map(d => (eventsByDate[d] ? '#00d4aa' : 'rgba(0,153,255,0.4)'));
-  const pointHoverRadii = dates.map(d => (eventsByDate[d] ? 9 : 5));
+  // Point styling for dates with news or selected date
+  const pointRadii = dates.map(d => (d === selectedNewsDate ? 8 : (eventsByDate[d] ? 6 : 2)));
+  const pointColors = dates.map(d => (d === selectedNewsDate ? '#ffb74d' : (eventsByDate[d] ? '#00d4aa' : 'rgba(0,153,255,0.4)')));
+  const pointHoverRadii = dates.map(d => (d === selectedNewsDate ? 10 : (eventsByDate[d] ? 9 : 5)));
 
   eventPriceChart = new Chart(ctx, {
     type: 'line',
@@ -390,6 +481,15 @@ function renderEventPriceChart(stockFilter) {
       responsive: true,
       maintainAspectRatio: false,
       interaction: { mode: 'index', intersect: false },
+      onClick: (evt, activeEls) => {
+        if (activeEls && activeEls.length > 0) {
+          const idx = activeEls[0].index;
+          const clickedDate = dates[idx];
+          if (clickedDate) {
+            selectNewsDate(clickedDate, targetSymbol);
+          }
+        }
+      },
       plugins: {
         legend: { labels: { color: '#8899bb', font: { family: 'Outfit', size: 12 } } },
         tooltip: {
@@ -401,7 +501,7 @@ function renderEventPriceChart(stockFilter) {
             title: ctx => {
               const idx = ctx[0].dataIndex;
               const dateRaw = dates[idx];
-              return `📅 ${formatDate(dateRaw)} — ${targetSymbol}`;
+              return `📅 ${formatDate(dateRaw)} — ${targetSymbol} (คลิกเพื่อกรองข่าว)`;
             },
             label: ctx => {
               const idx = ctx.dataIndex;
@@ -437,9 +537,14 @@ function renderEventTimeline(stockFilter) {
   const customEvents = getCustomEvents();
   const allEvents = [...customEvents, ...eventsData];
 
-  const items = allEvents
-    .filter(e => stockFilter === 'all' || e.stock === stockFilter)
-    .sort((a, b) => new Date(b.date) - new Date(a.date));
+  let items = allEvents.filter(e => stockFilter === 'all' || e.stock === stockFilter);
+
+  // If a specific date is selected from chart click, filter to that date!
+  if (selectedNewsDate) {
+    items = items.filter(e => e.date === selectedNewsDate);
+  }
+
+  items.sort((a, b) => new Date(b.date) - new Date(a.date));
 
   tl.innerHTML = items.map(e => {
     const isNews = e.type === 'NEWS';
@@ -462,7 +567,7 @@ function renderEventTimeline(stockFilter) {
     return `
       <div class="timeline-item">
         <div class="timeline-dot" style="background:${dotColor}"></div>
-        <div class="timeline-card">
+        <div class="timeline-card"${selectedNewsDate === e.date ? ' style="border-color:var(--accent-1);box-shadow:var(--shadow-glow)"' : ''}>
           <div class="timeline-meta" style="justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
             <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
               <span style="color:${color};font-weight:700">${e.stock}</span>
@@ -489,7 +594,7 @@ function renderEventTimeline(stockFilter) {
           ${e.remark ? `<div class="timeline-remark" style="margin-top:6px;font-size:12px;color:var(--text-secondary)">📌 ${e.remark}</div>` : ''}
         </div>
       </div>`;
-  }).join('') || '<div class="empty">ไม่มีเหตุการณ์</div>';
+  }).join('') || '<div class="empty">ไม่มีข่าวหรือเหตุการณ์ในวันที่เลือก</div>';
 }
 
 // ── 2. Links Sub-tab ─────────────────────────────────────────
