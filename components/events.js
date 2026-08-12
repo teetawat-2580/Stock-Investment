@@ -27,8 +27,8 @@ function renderEvents(container) {
   container.innerHTML = `
     <div class="page-header">
       <div>
-        <h2>📅 Events & Links</h2>
-        <p>เหตุการณ์สำคัญ ข่าวสารตลาด และบันทึกส่วนตัว (TradingView Links & Personal Notes)</p>
+        <h2>📅 Events & News Timeline</h2>
+        <p>เหตุการณ์สำคัญ ข่าวสารจาก Yahoo Finance / TradingView และบันทึกส่วนตัว</p>
       </div>
       <button class="pill active" style="background:var(--accent-grad);color:#000;font-weight:700" onclick="toggleEventNoteForm()">
         ✏️ + เพิ่มบันทึกเหตุการณ์ (Add Note)
@@ -54,8 +54,7 @@ function renderEvents(container) {
           <label style="font-size:11px;color:var(--text-muted);display:block;margin-bottom:4px">ประเภท (Type):</label>
           <select id="note-type-input" style="width:100%;padding:8px 12px;background:var(--bg-base);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-family:inherit;">
             <option value="NOTE">NOTE (บันทึกส่วนตัว)</option>
-            <option value="FACT">FACT (ข้อเท็จจริง)</option>
-            <option value="EST">EST (ประมาณการ)</option>
+            <option value="NEWS">NEWS (ข่าวสาร)</option>
           </select>
         </div>
       </div>
@@ -64,8 +63,8 @@ function renderEvents(container) {
         <input type="text" id="note-title-input" placeholder="e.g. ประกาศงบการเงิน Q2, ดอกเบี้ย FED, จุดเข้าซื้อสำคัญ" style="width:100%;padding:8px 12px;background:var(--bg-base);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);">
       </div>
       <div style="margin-bottom:14px;">
-        <label style="font-size:11px;color:var(--text-muted);display:block;margin-bottom:4px">หมายเหตุเพิ่มเติม (Remarks):</label>
-        <input type="text" id="note-remark-input" placeholder="e.g. แนวรับ 180$, TradingView chart note..." style="width:100%;padding:8px 12px;background:var(--bg-base);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);">
+        <label style="font-size:11px;color:var(--text-muted);display:block;margin-bottom:4px">หมายเหตุเพิ่มเติม (Remarks / URL):</label>
+        <input type="text" id="note-remark-input" placeholder="e.g. แนวรับ 180$, Link หรือรายละเอียดข่าว..." style="width:100%;padding:8px 12px;background:var(--bg-base);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);">
       </div>
       <div style="display:flex;gap:10px;justify-content:flex-end;">
         <button class="pill" onclick="toggleEventNoteForm(false)">ยกเลิก</button>
@@ -77,7 +76,7 @@ function renderEvents(container) {
 
     <div class="tab-bar" style="margin-bottom:20px;">
       <button class="tab-btn${activeEventSubTab === 'calendar' ? ' active' : ''}" onclick="switchEventSubTab('calendar', this)">
-        📅 Events Calendar & Notes
+        📅 News & Events Timeline
       </button>
       <button class="tab-btn${activeEventSubTab === 'links' ? ' active' : ''}" onclick="switchEventSubTab('links', this)">
         🔗 Sheet EVENT Link & TradingView
@@ -211,9 +210,8 @@ function renderCalendarSubTab(container) {
           </button>`).join('')}
       </div>
       <div style="display:flex;gap:10px;align-items:center;margin-left:auto;">
-        <span class="badge badge-purple">● NOTE (ส่วนตัว)</span>
-        <span class="badge badge-teal">● FACT</span>
-        <span class="badge badge-orange">● EST</span>
+        <span class="badge badge-blue">● NEWS (ข่าวสาร)</span>
+        <span class="badge badge-purple">● NOTE (บันทึก)</span>
       </div>
     </div>
 
@@ -235,27 +233,33 @@ function renderEventTimeline(stockFilter) {
     .sort((a, b) => new Date(b.date) - new Date(a.date));
 
   tl.innerHTML = items.map(e => {
-    const isFact = e.type === 'FACT';
+    const isNews = e.type === 'NEWS';
     const isNote = e.type === 'NOTE' || e.isCustom;
     const stockColors = {
       AMZN: '#ff9900', JPM: '#0052d4', NVDA: '#76b900', CRWD: '#ee3124', SPCX: '#9c27b0',
       BA: '#003399', TSLA: '#e82127', GOOGL: '#4285f4', V: '#1a1f71', NEM: '#eaaa00'
     };
     const color = stockColors[e.stock] || 'var(--accent-1)';
-    const badgeClass = isNote ? 'badge-purple' : (isFact ? 'badge-teal' : 'badge-orange');
+    const badgeClass = isNews ? 'badge-blue' : 'badge-purple';
+    const dotColor = isNews ? 'var(--accent-2)' : 'var(--purple)';
 
     return `
       <div class="timeline-item">
-        <div class="timeline-dot" style="background:${isNote ? 'var(--purple)' : (isFact ? 'var(--accent-1)' : 'var(--orange)')}"></div>
+        <div class="timeline-dot" style="background:${dotColor}"></div>
         <div class="timeline-card">
-          <div class="timeline-meta" style="justify-content:space-between;align-items:center;">
+          <div class="timeline-meta" style="justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
             <div style="display:flex;gap:10px;align-items:center;">
               <span style="color:${color};font-weight:700">${e.stock}</span>
               <span>${formatDate(e.date)}</span>
-              <span class="badge ${badgeClass}" style="font-size:10px">${e.type}</span>
+              <span class="badge ${badgeClass}" style="font-size:10px">${isNews ? 'NEWS' : 'NOTE'}</span>
             </div>
-            <div style="display:flex;gap:8px;align-items:center;">
-              <a href="https://www.tradingview.com/chart/?symbol=${e.stock}" target="_blank" rel="noopener noreferrer" class="btn-link-action" style="font-size:10px;padding:2px 8px;background:rgba(255,183,77,0.1);color:var(--orange);border-color:rgba(255,183,77,0.3)">
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+              ${e.url ? `
+                <a href="${e.url}" target="_blank" rel="noopener noreferrer" class="btn-link-action" style="font-size:11px;padding:3px 10px;">
+                  📰 อ่านข่าว ↗
+                </a>
+              ` : ''}
+              <a href="https://www.tradingview.com/chart/?symbol=${e.stock}" target="_blank" rel="noopener noreferrer" class="btn-link-action" style="font-size:11px;padding:3px 10px;background:rgba(255,183,77,0.1);color:var(--orange);border-color:rgba(255,183,77,0.3)">
                 📈 Chart ↗
               </a>
               ${e.isCustom ? `
@@ -264,8 +268,8 @@ function renderEventTimeline(stockFilter) {
               ` : ''}
             </div>
           </div>
-          <div class="timeline-event">${e.event}</div>
-          ${e.remark ? `<div class="timeline-remark">📌 ${e.remark}</div>` : ''}
+          <div class="timeline-event" style="margin-top:6px">${e.event}</div>
+          ${e.remark ? `<div class="timeline-remark" style="margin-top:6px;font-size:12px;color:var(--text-secondary)">📌 ${e.remark}</div>` : ''}
         </div>
       </div>`;
   }).join('') || '<div class="empty">ไม่มีเหตุการณ์</div>';
