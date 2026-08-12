@@ -472,15 +472,140 @@ tr:hover td { background: rgba(255,255,255,0.025); }
 @keyframes countUp { from { opacity: 0; } to { opacity: 1; } }
 @keyframes slideIn { from { transform: translateX(-10px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
-/* ─── Responsive ─────────────────────────────────────── */
+/* ─── Responsive & iPhone Mobile System ─────────────────────────────────── */
+#app {
+  min-height: 100vh;
+  min-height: 100dvh;
+  -webkit-overflow-scrolling: touch;
+}
+
+#main {
+  -webkit-overflow-scrolling: touch;
+}
+
+.sa-table-container, .table-container, .pill-group, .tab-bar {
+  -webkit-overflow-scrolling: touch;
+}
+
 @media (max-width: 900px) {
   :root { --sidebar-w: 60px; }
-  .nav-item span.nav-label { display: none; }
-  .sidebar-logo .logo-text { display: none; }
   .portfolio-layout { grid-template-columns: 1fr; }
   .grid-2 { grid-template-columns: 1fr; }
 }
-@media (max-width: 640px) {
-  #view { padding: 16px; }
-  .kpi-grid { grid-template-columns: repeat(2,1fr); }
+
+@media (max-width: 768px) {
+  #app {
+    flex-direction: column;
+  }
+
+  /* Fixed Bottom Navigation Bar for iPhone */
+  #sidebar {
+    width: 100% !important;
+    height: auto !important;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: rgba(16, 23, 42, 0.95);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-top: 1px solid var(--border);
+    border-right: none;
+    padding: 6px 8px calc(6px + max(4px, env(safe-area-inset-bottom))) 8px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .sidebar-logo {
+    display: none;
+  }
+
+  .sidebar-nav {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+    gap: 2px;
+  }
+
+  .nav-item {
+    flex-direction: column;
+    padding: 5px 6px;
+    border-radius: var(--radius-sm);
+    min-height: 44px;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+    flex: 1;
+  }
+
+  .nav-item .icon {
+    font-size: 17px;
+  }
+
+  .nav-item span.nav-label {
+    display: block !important;
+    font-size: 9px !important;
+    font-weight: 500;
+    letter-spacing: -0.2px;
+    white-space: nowrap;
+  }
+
+  #main {
+    padding-bottom: calc(72px + max(12px, env(safe-area-inset-bottom))) !important;
+    height: calc(100vh - 65px);
+    height: calc(100dvh - 65px);
+  }
+
+  /* Prevent iOS Safari auto-zoom on input focus */
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+
+  /* Touch Targets */
+  .pill, .btn-link-action, button {
+    min-height: 38px;
+    touch-action: manipulation;
+  }
+
+  .pill-group {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 6px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  #view {
+    padding: 14px 12px;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .chart-wrap {
+    height: 220px !important;
+  }
 }
+
+@media (max-width: 480px) {
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .timeline-meta {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
