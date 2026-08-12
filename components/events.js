@@ -1,11 +1,30 @@
 // ─── Events View ─────────────────────────────────────────────
 let activeEventSubTab = 'calendar';
-let activeEventStock = 'all';
+let activeEventStock = 'JPM';
 let activeLinkStock = 'all';
 let linkSearchQuery = '';
 let editingEventId = null;
+let eventPriceChart = null;
 
-// ── Custom Events (Local Storage) ─────────────────────────────
+const DEFAULT_EVENT_STOCKS = ['JPM', 'AMZN', 'NVDA', 'TSLA', 'BA', 'GOOGL', 'BAC', 'V', 'INTC', 'CRWD', 'NEM', 'RTX', 'LMT'];
+
+function getUserEventStocks() {
+  try {
+    const saved = localStorage.getItem('event_user_stocks');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    }
+  } catch (e) {}
+  return [...DEFAULT_EVENT_STOCKS];
+}
+
+function setUserEventStocks(stocks) {
+  try {
+    localStorage.setItem('event_user_stocks', JSON.stringify(stocks));
+  } catch (e) {}
+}
+
 function getCustomEvents() {
   try {
     const saved = localStorage.getItem('custom_user_events');
@@ -24,15 +43,25 @@ function saveCustomEvents(events) {
 }
 
 function renderEvents(container) {
+  const userStocks = getUserEventStocks();
+  if (activeEventStock !== 'all' && !userStocks.includes(activeEventStock)) {
+    activeEventStock = userStocks[0] || 'JPM';
+  }
+
   container.innerHTML = `
     <div class="page-header">
       <div>
         <h2>📅 Events & News Timeline</h2>
-        <p>เหตุการณ์สำคัญ ข่าวสารจาก Yahoo Finance / TradingView และบันทึกส่วนตัว</p>
+        <p>เหตุการณ์สำคัญ ข่าวสารพร้อมกราฟราคาหุ้น (News-Correlated Stock Price Graph)</p>
       </div>
-      <button class="pill active" style="background:var(--accent-grad);color:#000;font-weight:700" onclick="toggleEventNoteForm()">
-        ✏️ + เพิ่มบันทึกเหตุการณ์ (Add Note)
-      </button>
+      <div style="display:flex;gap:10px;align-items:center;">
+        <button class="pill active" style="background:var(--accent-grad);color:#000;font-weight:700" onclick="promptAddEventStock()">
+          ➕ Add Stock
+        </button>
+        <button class="pill active" style="background:rgba(0,212,170,0.15);color:var(--accent-1);border-color:var(--accent-1)" onclick="toggleEventNoteForm()">
+          ✏️ + บันทึกส่วนตัว (Add Note)
+        </button>
+      </div>
     </div>
 
     <!-- Personal Note Input Form (Hidden by default) -->
@@ -89,6 +118,36 @@ function renderEvents(container) {
   renderEventSubTabContent();
 }
 
+function promptAddEventStock() {
+  const symbol = prompt("กรอกชื่อหุ้นที่ต้องการเพิ่มเข้า Event Filter (e.g. AAPL, MSFT, META):");
+  if (!symbol) return;
+  const cleanSym = symbol.trim().toUpperCase();
+  if (!cleanSym) return;
+
+  const userStocks = getUserEventStocks();
+  if (!userStocks.includes(cleanSym)) {
+    userStocks.push(cleanSym);
+    setUserEventStocks(userStocks);
+  }
+  activeEventStock = cleanSym;
+  renderEvents(document.getElementById('vp-events'));
+}
+
+function removeActiveEventStock() {
+  const userStocks = getUserEventStocks();
+  if (userStocks.length <= 1) {
+    alert("ต้องมีอย่างน้อย 1 หุ้นในรายการ");
+    return;
+  }
+
+  if (confirm(`คุณต้องการลบ ${activeEventStock} ออกจาก Filter หรือไม่?`)) {
+    const updated = userStocks.filter(s => s !== activeEventStock);
+    setUserEventStocks(updated);
+    activeEventStock = updated[0] || 'all';
+    renderEvents(document.getElementById('vp-events'));
+  }
+}
+
 function switchEventSubTab(tab, btn) {
   activeEventSubTab = tab;
   document.querySelectorAll('.tab-bar .tab-btn').forEach(b => b.classList.remove('active'));
@@ -118,7 +177,7 @@ function toggleEventNoteForm(show) {
   if (show) {
     editingEventId = null;
     document.getElementById('event-form-title').textContent = '➕ เพิ่มบันทึกเหตุการณ์ส่วนตัว';
-    document.getElementById('note-stock-input').value = '';
+    document.getElementById('note-stock-input').value = activeEventStock !== 'all' ? activeEventStock : '';
     document.getElementById('note-date-input').value = new Date().toISOString().split('T')[0];
     document.getElementById('note-type-input').value = 'NOTE';
     document.getElementById('note-title-input').value = '';
@@ -199,26 +258,176 @@ function saveEventNote() {
 function renderCalendarSubTab(container) {
   const customEvents = getCustomEvents();
   const allEvents = [...customEvents, ...eventsData];
-  const stocks = ['all', ...new Set(allEvents.map(e => e.stock))];
+  const userStocks = getUserEventStocks();
+  const stocks = ['all', ...userStocks];
 
   container.innerHTML = `
-    <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;flex-wrap:wrap;">
+    <!-- Stock Selection & Actions -->
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px;flex-wrap:wrap;">
       <div class="pill-group" id="event-filter" style="margin-bottom:0">
         ${stocks.map(s => `
           <button class="pill${s === activeEventStock ? ' active' : ''}" onclick="filterEvents('${s}',this)">
             ${s === 'all' ? 'ทั้งหมด' : s}
           </button>`).join('')}
       </div>
-      <div style="display:flex;gap:10px;align-items:center;margin-left:auto;">
+      <div style="display:flex;gap:10px;align-items:center;">
+        ${activeEventStock !== 'all' && userStocks.length > 1 ? `
+          <button class="pill" style="border-color:rgba(255,77,109,0.3);color:var(--red);font-size:12px;" onclick="removeActiveEventStock()">
+            🗑️ ลบ ${activeEventStock}
+          </button>
+        ` : ''}
         <span class="badge badge-blue">● NEWS (ข่าวสาร)</span>
         <span class="badge badge-purple">● NOTE (บันทึก)</span>
       </div>
     </div>
 
+    <!-- News-Correlated Stock Price Graph -->
+    <div class="card" id="news-chart-card" style="margin-bottom:24px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+        <div>
+          <div class="card-title" style="margin-bottom:2px">📈 กราฟราคาหุ้นสัมพัทธ์กับข่าว (Stock Price &amp; News Correlation) — ${activeEventStock.toUpperCase()}</div>
+          <p style="font-size:12px;color:var(--text-secondary)">พอยต์บนเส้นกราฟระบุราคาหุ้น ณ วันที่ออกข่าว ชี้เมาส์เพื่อดูหัวข้อข่าว</p>
+        </div>
+      </div>
+      <div class="chart-wrap" style="height:260px">
+        <canvas id="event-price-chart"></canvas>
+      </div>
+    </div>
+
+    <!-- Events Timeline -->
     <div class="timeline" id="events-timeline"></div>
+
+    <!-- Data Reference Credit Footer -->
+    <div style="margin-top:24px;padding:14px 18px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--text-secondary);">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:16px">📌</span>
+        <div>
+          <strong style="color:var(--text-primary)">Data Reference Credits:</strong>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:1px">Yahoo Finance (Live News Feeds &amp; Historical Close Prices) &amp; TradingView Charts</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <a href="https://finance.yahoo.com/quote/${activeEventStock !== 'all' ? activeEventStock : 'JPM'}/news/" target="_blank" rel="noopener noreferrer" class="btn-link-action" style="font-size:11px;padding:4px 12px;">
+          🔗 Yahoo Finance News ↗
+        </a>
+        <a href="https://www.tradingview.com/chart/?symbol=${activeEventStock !== 'all' ? activeEventStock : 'JPM'}" target="_blank" rel="noopener noreferrer" class="btn-link-action" style="font-size:11px;padding:4px 12px;background:rgba(255,183,77,0.1);color:var(--orange);border-color:rgba(255,183,77,0.3)">
+          📈 TradingView Chart ↗
+        </a>
+      </div>
+    </div>
   `;
 
+  renderEventPriceChart(activeEventStock);
   renderEventTimeline(activeEventStock);
+}
+
+function filterEvents(stock, btn) {
+  activeEventStock = stock;
+  document.querySelectorAll('#event-filter .pill').forEach(p => p.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+
+  // Update chart header title
+  const chartTitle = document.querySelector('#news-chart-card .card-title');
+  if (chartTitle) {
+    chartTitle.textContent = `📈 กราฟราคาหุ้นสัมพัทธ์กับข่าว (Stock Price & News Correlation) — ${stock.toUpperCase()}`;
+  }
+
+  renderEventPriceChart(stock);
+  renderEventTimeline(stock);
+}
+
+function renderEventPriceChart(stockFilter) {
+  const canvas = document.getElementById('event-price-chart');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  if (eventPriceChart) eventPriceChart.destroy();
+
+  const targetSymbol = (stockFilter === 'all' ? 'JPM' : stockFilter).toUpperCase();
+  const pricesMap = (typeof stockPricesData !== 'undefined' && stockPricesData[targetSymbol]) ? stockPricesData[targetSymbol] : null;
+
+  if (!pricesMap) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    return;
+  }
+
+  const customEvents = getCustomEvents();
+  const allEvents = [...customEvents, ...eventsData];
+  const stockEvents = allEvents.filter(e => e.stock === targetSymbol);
+
+  // Group news titles by date
+  const eventsByDate = {};
+  stockEvents.forEach(e => {
+    if (!eventsByDate[e.date]) eventsByDate[e.date] = [];
+    eventsByDate[e.date].push(e.event);
+  });
+
+  const dates = Object.keys(pricesMap).sort();
+  const prices = dates.map(d => pricesMap[d]);
+
+  // Point styling for dates with news
+  const pointRadii = dates.map(d => (eventsByDate[d] ? 6 : 2));
+  const pointColors = dates.map(d => (eventsByDate[d] ? '#00d4aa' : 'rgba(0,153,255,0.4)'));
+  const pointHoverRadii = dates.map(d => (eventsByDate[d] ? 9 : 5));
+
+  eventPriceChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: dates.map(d => formatDate(d)),
+      datasets: [{
+        label: `${targetSymbol} Closing Price ($)`,
+        data: prices,
+        borderColor: '#0099ff',
+        backgroundColor: 'rgba(0,153,255,0.1)',
+        borderWidth: 2,
+        pointRadius: pointRadii,
+        pointBackgroundColor: pointColors,
+        pointHoverRadius: pointHoverRadii,
+        tension: 0.25,
+        fill: true
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { labels: { color: '#8899bb', font: { family: 'Outfit', size: 12 } } },
+        tooltip: {
+          backgroundColor: '#10172a',
+          borderColor: 'rgba(0,212,170,0.3)',
+          borderWidth: 1,
+          padding: 12,
+          callbacks: {
+            title: ctx => {
+              const idx = ctx[0].dataIndex;
+              const dateRaw = dates[idx];
+              return `📅 ${formatDate(dateRaw)} — ${targetSymbol}`;
+            },
+            label: ctx => {
+              const idx = ctx.dataIndex;
+              const dateRaw = dates[idx];
+              const price = prices[idx];
+              const lines = [`💰 Close Price: $${formatNum(price, 2)}`];
+
+              const newsList = eventsByDate[dateRaw];
+              if (newsList && newsList.length > 0) {
+                lines.push('');
+                lines.push(`📰 News Published on this day (${newsList.length}):`);
+                newsList.forEach(n => {
+                  lines.push(` • ${n.length > 70 ? n.substring(0, 70) + '...' : n}`);
+                });
+              }
+              return lines;
+            }
+          }
+        }
+      },
+      scales: {
+        x: { ticks: { color: '#4a5a80', font: { size: 10 }, maxTicksLimit: 12 }, grid: { color: 'rgba(255,255,255,0.04)' } },
+        y: { ticks: { color: '#4a5a80', callback: v => '$' + v }, grid: { color: 'rgba(255,255,255,0.04)' } }
+      }
+    }
+  });
 }
 
 function renderEventTimeline(stockFilter) {
@@ -243,15 +452,23 @@ function renderEventTimeline(stockFilter) {
     const badgeClass = isNews ? 'badge-blue' : 'badge-purple';
     const dotColor = isNews ? 'var(--accent-2)' : 'var(--purple)';
 
+    // Lookup stock close price on event date
+    let priceSnippet = '';
+    if (typeof stockPricesData !== 'undefined' && stockPricesData[e.stock] && stockPricesData[e.stock][e.date]) {
+      const p = stockPricesData[e.stock][e.date];
+      priceSnippet = `<span class="badge badge-gray" style="font-size:10px">💰 Price: $${formatNum(p,2)}</span>`;
+    }
+
     return `
       <div class="timeline-item">
         <div class="timeline-dot" style="background:${dotColor}"></div>
         <div class="timeline-card">
           <div class="timeline-meta" style="justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
-            <div style="display:flex;gap:10px;align-items:center;">
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
               <span style="color:${color};font-weight:700">${e.stock}</span>
               <span>${formatDate(e.date)}</span>
               <span class="badge ${badgeClass}" style="font-size:10px">${isNews ? 'NEWS' : 'NOTE'}</span>
+              ${priceSnippet}
             </div>
             <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
               ${e.url ? `
@@ -273,13 +490,6 @@ function renderEventTimeline(stockFilter) {
         </div>
       </div>`;
   }).join('') || '<div class="empty">ไม่มีเหตุการณ์</div>';
-}
-
-function filterEvents(stock, btn) {
-  activeEventStock = stock;
-  document.querySelectorAll('#event-filter .pill').forEach(p => p.classList.remove('active'));
-  btn.classList.add('active');
-  renderEventTimeline(stock);
 }
 
 // ── 2. Links Sub-tab ─────────────────────────────────────────
