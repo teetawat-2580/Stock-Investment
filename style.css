@@ -436,6 +436,38 @@ tr:hover td { background: rgba(255,255,255,0.025); }
   box-shadow: 0 0 12px rgba(0, 212, 170, 0.3);
 }
 
+/* ─── Stock Analysis Sticky Table ─────────────────────── */
+.sa-table th:first-child,
+.sa-table td:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 10;
+  background: var(--bg-card);
+  border-right: 1px solid var(--border);
+  min-width: 240px;
+  max-width: 280px;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.3);
+}
+.sa-table tr:hover td:first-child {
+  background: var(--bg-card-hover);
+}
+.sa-table th {
+  position: sticky;
+  top: 0;
+  z-index: 15;
+}
+.sa-table th:first-child {
+  z-index: 20;
+}
+.sa-row-highlight {
+  background: rgba(0, 212, 170, 0.05);
+}
+.sa-row-highlight td:first-child {
+  background: #15253e !important;
+  color: var(--accent-1) !important;
+  font-weight: 700 !important;
+}
+
 /* ─── Animations ─────────────────────────────────────── */
 @keyframes countUp { from { opacity: 0; } to { opacity: 1; } }
 @keyframes slideIn { from { transform: translateX(-10px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
