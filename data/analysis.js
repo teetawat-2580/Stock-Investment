@@ -1,6 +1,8 @@
 const saAnalysisData = {
   "JPM": {
     "quarters": [
+      "Q2 2026",
+      "Q1 2026",
       "Q4 2025",
       "Q3 2025",
       "Q2 2025",
@@ -24,6 +26,8 @@ const saAnalysisData = {
     ],
     "metrics": {
       "Interest Income on Loans": [
+        50624.0,
+        49191.0,
         48808.0,
         49439.0,
         48241.0,
@@ -46,6 +50,8 @@ const saAnalysisData = {
         14271.0
       ],
       "Interest Paid on Deposits": [
+        25113.0,
+        23825.0,
         23813.0,
         25473.0,
         25032.0,
@@ -68,6 +74,8 @@ const saAnalysisData = {
         1382.0
       ],
       "Net Interest Income": [
+        25511.0,
+        25366.0,
         24995.0,
         23966.0,
         23209.0,
@@ -90,6 +98,8 @@ const saAnalysisData = {
         12889.0
       ],
       "Net Interest Income Growth (YoY)": [
+        null,
+        null,
         0.0704,
         0.024,
         0.0204,
@@ -112,6 +122,8 @@ const saAnalysisData = {
         -0.1073
       ],
       "Trust Income": [
+        null,
+        null,
         5701.0,
         5120.0,
         4806.0,
@@ -134,6 +146,8 @@ const saAnalysisData = {
         5029.0
       ],
       "Mortgage Banking Activities": [
+        null,
+        null,
         357.0,
         383.0,
         363.0,
@@ -156,6 +170,8 @@ const saAnalysisData = {
         704.0
       ],
       "Income From Trading Activities": [
+        null,
+        null,
         5340.0,
         7109.0,
         7149.0,
@@ -190,6 +206,8 @@ const saAnalysisData = {
         null,
         null,
         null,
+        null,
+        null,
         -8.0,
         null,
         null,
@@ -200,6 +218,8 @@ const saAnalysisData = {
         null
       ],
       "Gain (Loss) on Sale of Investments": [
+        null,
+        null,
         -71.0,
         197.0,
         -61.0,
@@ -222,6 +242,8 @@ const saAnalysisData = {
         20.0
       ],
       "Other Non-Interest Income": [
+        null,
+        null,
         9476.0,
         9652.0,
         9446.0,
@@ -244,6 +266,8 @@ const saAnalysisData = {
         7124.0
       ],
       "Total Non-Interest Income": [
+        null,
+        null,
         20803.0,
         22461.0,
         21703.0,
@@ -266,6 +290,8 @@ const saAnalysisData = {
         19377.0
       ],
       "Non-Interest Income Growth (YoY)": [
+        null,
+        null,
         0.0713,
         0.16690000000000002,
         -0.20600000000000002,
@@ -288,6 +314,8 @@ const saAnalysisData = {
         0.3994
       ],
       "Revenues Before Loan Losses": [
+        null,
+        null,
         45798.0,
         46427.0,
         44912.0,
@@ -310,6 +338,8 @@ const saAnalysisData = {
         32266.0
       ],
       "Provision for Loan Losses": [
+        null,
+        null,
         4655.0,
         3403.0,
         2849.0,
@@ -332,6 +362,8 @@ const saAnalysisData = {
         -4156.0
       ],
       "Revenue": [
+        52852.0,
+        49833.0,
         41143.0,
         43024.0,
         42063.0,
@@ -354,6 +386,8 @@ const saAnalysisData = {
         36422.0
       ],
       "Revenue Growth (YoY)": [
+        0.2565,
+        0.1864,
         0.025099999999999997,
         0.08800000000000001,
         -0.1056,
@@ -376,6 +410,8 @@ const saAnalysisData = {
         0.821
       ],
       "Salaries and Employee Benefits": [
+        15159.0,
+        15339.0,
         13118.0,
         12656.0,
         12751.0,
@@ -398,6 +434,8 @@ const saAnalysisData = {
         9697.0
       ],
       "Selling, General & Administrative": [
+        16829.0,
+        17275.0,
         9189.0,
         9822.0,
         9212.0,
@@ -420,6 +458,8 @@ const saAnalysisData = {
         7492.0
       ],
       "Other Non-Interest Expense": [
+        1927.0,
+        1401.0,
         1290.0,
         1741.0,
         1698.0,
@@ -442,6 +482,8 @@ const saAnalysisData = {
         1508.0
       ],
       "Total Non-Interest Expense": [
+        null,
+        null,
         23597.0,
         24219.0,
         23661.0,
@@ -464,6 +506,8 @@ const saAnalysisData = {
         18697.0
       ],
       "EBT Excluding Unusual Items": [
+        null,
+        null,
         17546.0,
         18805.0,
         18402.0,
@@ -486,6 +530,8 @@ const saAnalysisData = {
         17725.0
       ],
       "Legal Settlements": [
+        null,
+        null,
         -60.0,
         -62.0,
         -118.0,
@@ -508,6 +554,8 @@ const saAnalysisData = {
         -28.0
       ],
       "Other Unusual Items": [
+        null,
+        null,
         -326.0,
         null,
         null,
@@ -530,6 +578,8 @@ const saAnalysisData = {
         null
       ],
       "Pretax Income": [
+        27516.0,
+        20479.0,
         17160.0,
         18743.0,
         18284.0,
@@ -552,6 +602,8 @@ const saAnalysisData = {
         17697.0
       ],
       "Income Tax Expense": [
+        6361.0,
+        3985.0,
         4135.0,
         4350.0,
         3297.0,
@@ -574,6 +626,8 @@ const saAnalysisData = {
         3397.0
       ],
       "Net Income": [
+        21155.0,
+        16494.0,
         13025.0,
         14393.0,
         14987.0,
@@ -596,6 +650,8 @@ const saAnalysisData = {
         14300.0
       ],
       "Preferred Dividends & Other Adjustments": [
+        null,
+        null,
         336.0,
         350.0,
         357.0,
@@ -618,6 +674,8 @@ const saAnalysisData = {
         449.0
       ],
       "Net Income to Common": [
+        20752.0,
+        16148.0,
         12689.0,
         14043.0,
         14630.0,
@@ -640,6 +698,8 @@ const saAnalysisData = {
         13851.0
       ],
       "Net Income Growth": [
+        0.4116,
+        0.1264,
         -0.07,
         0.1159,
         -0.17420000000000002,
@@ -662,6 +722,8 @@ const saAnalysisData = {
         3.9913
       ],
       "Basic Shares Outstanding": [
+        2689.9,
+        2716.2,
         2735.0,
         2762.0,
         2789.0,
@@ -684,6 +746,8 @@ const saAnalysisData = {
         3074.0
       ],
       "Diluted Shares Outstanding": [
+        2694.2,
+        2720.2,
         2741.0,
         2768.0,
         2794.0,
@@ -706,6 +770,8 @@ const saAnalysisData = {
         3079.0
       ],
       "Shares Change (YoY)": [
+        null,
+        null,
         -0.0358,
         -0.034300000000000004,
         -0.035,
@@ -728,6 +794,8 @@ const saAnalysisData = {
         -0.006999999999999999
       ],
       "EPS (Basic)": [
+        7.71,
+        5.95,
         4.64,
         5.08,
         5.25,
@@ -750,6 +818,8 @@ const saAnalysisData = {
         4.51
       ],
       "EPS (Diluted)": [
+        7.7,
+        5.94,
         4.63,
         5.07,
         5.24,
@@ -772,6 +842,8 @@ const saAnalysisData = {
         4.5
       ],
       "EPS Growth": [
+        0.4695,
+        0.1716,
         -0.037000000000000005,
         0.1602,
         -0.1438,
@@ -794,6 +866,8 @@ const saAnalysisData = {
         4.7261
       ],
       "Dividend Per Share": [
+        null,
+        null,
         1.5,
         1.5,
         1.4,
@@ -816,6 +890,8 @@ const saAnalysisData = {
         0.9
       ],
       "Dividend Growth": [
+        null,
+        null,
         0.2,
         0.2,
         0.21739999999999998,
@@ -838,6 +914,8 @@ const saAnalysisData = {
         null
       ],
       "Effective Tax Rate": [
+        null,
+        null,
         0.24100000000000002,
         0.2321,
         0.18030000000000002,
@@ -863,6 +941,9 @@ const saAnalysisData = {
   },
   "AMZN": {
     "quarters": [
+      "Q2 2026",
+      "Q1 2026",
+      "Q4 2025",
       "Q3 2025",
       "Q2 2025",
       "Q1 2025",
@@ -886,6 +967,9 @@ const saAnalysisData = {
     ],
     "metrics": {
       "Revenue": [
+        null,
+        181519.0,
+        213386.0,
         180169.0,
         167702.0,
         155667.0,
@@ -908,6 +992,9 @@ const saAnalysisData = {
         125555.0
       ],
       "Revenue Growth (YoY)": [
+        null,
+        0.1661,
+        0.1363,
         0.134,
         0.1333,
         0.0862,
@@ -930,6 +1017,9 @@ const saAnalysisData = {
         0.436
       ],
       "Cost of Revenue": [
+        null,
+        null,
+        null,
         88670.0,
         80809.0,
         76976.0,
@@ -952,6 +1042,9 @@ const saAnalysisData = {
         79284.0
       ],
       "Gross Profit": [
+        null,
+        94056.0,
+        103427.0,
         91499.0,
         86893.0,
         78691.0,
@@ -974,6 +1067,9 @@ const saAnalysisData = {
         46271.0
       ],
       "Selling, General & Admin": [
+        null,
+        null,
+        null,
         46470.0,
         44442.0,
         40920.0,
@@ -996,6 +1092,9 @@ const saAnalysisData = {
         23428.0
       ],
       "Research & Development": [
+        null,
+        null,
+        null,
         24732.0,
         23081.0,
         19058.0,
@@ -1018,6 +1117,9 @@ const saAnalysisData = {
         16466.0
       ],
       "Other Operating Expenses": [
+        null,
+        null,
+        null,
         375.0,
         199.0,
         308.0,
@@ -1040,6 +1142,9 @@ const saAnalysisData = {
         -496.0
       ],
       "Operating Expenses": [
+        null,
+        null,
+        null,
         71577.0,
         67722.0,
         60286.0,
@@ -1062,6 +1167,9 @@ const saAnalysisData = {
         39398.0
       ],
       "Operating Income": [
+        null,
+        23852.0,
+        24977.0,
         19922.0,
         19171.0,
         18405.0,
@@ -1084,6 +1192,9 @@ const saAnalysisData = {
         6873.0
       ],
       "Interest Expense": [
+        null,
+        null,
+        null,
         -538.0,
         -516.0,
         -541.0,
@@ -1106,6 +1217,9 @@ const saAnalysisData = {
         -414.0
       ],
       "Interest & Investment Income": [
+        null,
+        null,
+        null,
         1100.0,
         1085.0,
         1066.0,
@@ -1128,6 +1242,9 @@ const saAnalysisData = {
         100.0
       ],
       "Earnings From Equity Investments": [
+        null,
+        null,
+        null,
         -73.0,
         -15.0,
         1.0,
@@ -1150,6 +1267,9 @@ const saAnalysisData = {
         22.0
       ],
       "Currency Exchange Gain (Loss)": [
+        null,
+        null,
+        null,
         1.0,
         70.0,
         -2.0,
@@ -1172,6 +1292,9 @@ const saAnalysisData = {
         132.0
       ],
       "Other Non Operating Income (Expenses)": [
+        null,
+        null,
+        null,
         -9.0,
         -2.0,
         -33.0,
@@ -1194,6 +1317,9 @@ const saAnalysisData = {
         -30.0
       ],
       "EBT Excluding Unusual Items": [
+        null,
+        null,
+        null,
         20403.0,
         19793.0,
         18896.0,
@@ -1216,6 +1342,9 @@ const saAnalysisData = {
         6683.0
       ],
       "Gain (Loss) on Sale of Investments": [
+        null,
+        null,
+        null,
         10194.0,
         1049.0,
         2784.0,
@@ -1249,6 +1378,9 @@ const saAnalysisData = {
         null,
         null,
         null,
+        null,
+        null,
+        null,
         -750.0,
         null,
         null,
@@ -1260,6 +1392,9 @@ const saAnalysisData = {
         null
       ],
       "Legal Settlements": [
+        null,
+        null,
+        null,
         -2500.0,
         null,
         null,
@@ -1282,6 +1417,9 @@ const saAnalysisData = {
         null
       ],
       "Pretax Income": [
+        null,
+        39834.0,
+        26605.0,
         28097.0,
         20842.0,
         21680.0,
@@ -1304,6 +1442,9 @@ const saAnalysisData = {
         7787.0
       ],
       "Income Tax Expense": [
+        null,
+        9560.0,
+        4946.0,
         6910.0,
         2678.0,
         4553.0,
@@ -1326,6 +1467,9 @@ const saAnalysisData = {
         565.0
       ],
       "Net Income": [
+        null,
+        30255.0,
+        21192.0,
         21187.0,
         18164.0,
         17127.0,
@@ -1348,6 +1492,9 @@ const saAnalysisData = {
         7222.0
       ],
       "Net Income to Common": [
+        null,
+        30255.0,
+        21192.0,
         21187.0,
         18164.0,
         17127.0,
@@ -1370,6 +1517,9 @@ const saAnalysisData = {
         7222.0
       ],
       "Net Income Growth": [
+        null,
+        0.7665,
+        0.0594,
         0.3822,
         0.34700000000000003,
         0.6419,
@@ -1392,6 +1542,9 @@ const saAnalysisData = {
         1.2099
       ],
       "Shares Outstanding (Basic)": [
+        null,
+        null,
+        null,
         10674.0,
         10637.0,
         10603.0,
@@ -1414,6 +1567,9 @@ const saAnalysisData = {
         10040.0
       ],
       "Shares Outstanding (Diluted)": [
+        null,
+        null,
+        null,
         10845.0,
         10806.0,
         10793.0,
@@ -1436,6 +1592,9 @@ const saAnalysisData = {
         10260.0
       ],
       "Shares Change (YoY)": [
+        null,
+        null,
+        null,
         0.0103,
         0.0092,
         0.0115,
@@ -1458,6 +1617,9 @@ const saAnalysisData = {
         0.0158
       ],
       "EPS (Basic)": [
+        5.82,
+        2.82,
+        1.98,
         1.98,
         1.71,
         1.62,
@@ -1480,6 +1642,9 @@ const saAnalysisData = {
         0.72
       ],
       "EPS (Diluted)": [
+        5.75,
+        2.78,
+        1.95,
         1.95,
         1.68,
         1.59,
@@ -1502,6 +1667,9 @@ const saAnalysisData = {
         0.7
       ],
       "EPS Growth": [
+        2.4226,
+        0.7484,
+        0.0484,
         0.3636,
         0.3333,
         0.6224000000000001,
@@ -1524,6 +1692,9 @@ const saAnalysisData = {
         1.1664
       ],
       "Free Cash Flow": [
+        null,
+        null,
+        null,
         430.0,
         332.0,
         -8004.0,
@@ -1546,6 +1717,9 @@ const saAnalysisData = {
         15608.0
       ],
       "Free Cash Flow Per Share": [
+        null,
+        null,
+        null,
         0.04,
         0.03,
         -0.74,
@@ -1568,6 +1742,9 @@ const saAnalysisData = {
         1.52
       ],
       "Gross Margin": [
+        null,
+        null,
+        null,
         0.5079,
         0.5181,
         0.5055,
@@ -1590,6 +1767,9 @@ const saAnalysisData = {
         0.3685
       ],
       "Operating Margin": [
+        null,
+        null,
+        null,
         0.1106,
         0.1143,
         0.1182,
@@ -1612,6 +1792,9 @@ const saAnalysisData = {
         0.0547
       ],
       "Profit Margin": [
+        null,
+        null,
+        null,
         0.1176,
         0.10830000000000001,
         0.11,
@@ -1634,6 +1817,9 @@ const saAnalysisData = {
         0.0575
       ],
       "Free Cash Flow Margin": [
+        null,
+        null,
+        null,
         0.0024,
         0.002,
         -0.051399999999999994,
@@ -1656,6 +1842,9 @@ const saAnalysisData = {
         0.1243
       ],
       "EBITDA": [
+        null,
+        null,
+        null,
         36718.0,
         34398.0,
         32667.0,
@@ -1678,6 +1867,9 @@ const saAnalysisData = {
         14491.0
       ],
       "EBITDA Margin": [
+        null,
+        null,
+        null,
         0.20379999999999998,
         0.2051,
         0.20980000000000001,
@@ -1700,6 +1892,9 @@ const saAnalysisData = {
         0.11539999999999999
       ],
       "D&A For EBITDA": [
+        null,
+        null,
+        null,
         16796.0,
         15227.0,
         14262.0,
@@ -1722,6 +1917,9 @@ const saAnalysisData = {
         7618.0
       ],
       "EBIT": [
+        null,
+        null,
+        null,
         19922.0,
         19171.0,
         18405.0,
@@ -1744,6 +1942,9 @@ const saAnalysisData = {
         6873.0
       ],
       "EBIT Margin": [
+        null,
+        null,
+        null,
         0.1106,
         0.1143,
         0.1182,
@@ -1766,6 +1967,9 @@ const saAnalysisData = {
         0.0547
       ],
       "Effective Tax Rate": [
+        null,
+        null,
+        null,
         0.2459,
         0.1285,
         0.21,
@@ -1788,6 +1992,9 @@ const saAnalysisData = {
         0.0726
       ],
       "Revenue as Reported": [
+        null,
+        null,
+        null,
         180169.0,
         167702.0,
         155667.0,
@@ -1813,6 +2020,11 @@ const saAnalysisData = {
   },
   "NVDA": {
     "quarters": [
+      "Q2 FY26",
+      "Q1 FY26",
+      "Q4 FY25",
+      "Q3 FY25",
+      "Q2 FY25",
       "Q3 2026",
       "Q2 2026",
       "Q1 2026",
@@ -1836,6 +2048,11 @@ const saAnalysisData = {
     ],
     "metrics": {
       "Revenue": [
+        81615.0,
+        68127.0,
+        57006.0,
+        46743.0,
+        44062.0,
         57006.0,
         46743.0,
         44062.0,
@@ -1858,6 +2075,11 @@ const saAnalysisData = {
         5003.0
       ],
       "Revenue Growth (YoY)": [
+        0.8523,
+        0.1951,
+        0.2196,
+        0.0608,
+        0.1203,
         0.6249,
         0.556,
         0.6918000000000001,
@@ -1880,6 +2102,11 @@ const saAnalysisData = {
         0.6113000000000001
       ],
       "Cost of Revenue": [
+        null,
+        null,
+        null,
+        null,
+        null,
         15157.0,
         12890.0,
         17394.0,
@@ -1902,6 +2129,11 @@ const saAnalysisData = {
         1847.0
       ],
       "Gross Profit": [
+        61157.0,
+        51093.0,
+        41849.0,
+        33853.0,
+        26668.0,
         41849.0,
         33853.0,
         26668.0,
@@ -1924,6 +2156,11 @@ const saAnalysisData = {
         3156.0
       ],
       "Selling, General & Admin": [
+        null,
+        null,
+        null,
+        null,
+        null,
         1134.0,
         1122.0,
         1041.0,
@@ -1946,6 +2183,11 @@ const saAnalysisData = {
         475.0
       ],
       "Research & Development": [
+        null,
+        null,
+        null,
+        null,
+        null,
         4705.0,
         4291.0,
         3989.0,
@@ -1968,6 +2210,11 @@ const saAnalysisData = {
         1146.0
       ],
       "Operating Expenses": [
+        null,
+        null,
+        null,
+        null,
+        null,
         5839.0,
         5413.0,
         5030.0,
@@ -1990,6 +2237,11 @@ const saAnalysisData = {
         1621.0
       ],
       "Operating Income": [
+        53536.0,
+        44299.0,
+        36010.0,
+        28440.0,
+        21638.0,
         36010.0,
         28440.0,
         21638.0,
@@ -2012,6 +2264,11 @@ const saAnalysisData = {
         1535.0
       ],
       "Interest Expense": [
+        null,
+        null,
+        null,
+        null,
+        null,
         -61.0,
         -62.0,
         -63.0,
@@ -2034,6 +2291,11 @@ const saAnalysisData = {
         -53.0
       ],
       "Interest & Investment Income": [
+        null,
+        null,
+        null,
+        null,
+        null,
         624.0,
         592.0,
         515.0,
@@ -2075,9 +2337,19 @@ const saAnalysisData = {
         null,
         null,
         null,
+        null,
+        null,
+        null,
+        null,
+        null,
         4.0
       ],
       "Other Non Operating Income (Expenses)": [
+        null,
+        null,
+        null,
+        null,
+        null,
         679.0,
         1971.0,
         -5.0,
@@ -2100,6 +2372,11 @@ const saAnalysisData = {
         -4.0
       ],
       "EBT Excluding Unusual Items": [
+        null,
+        null,
+        null,
+        null,
+        null,
         37252.0,
         30941.0,
         22085.0,
@@ -2136,6 +2413,11 @@ const saAnalysisData = {
         null,
         null,
         null,
+        null,
+        null,
+        null,
+        null,
+        null,
         -1353.0,
         null,
         null,
@@ -2144,6 +2426,11 @@ const saAnalysisData = {
         -28.0
       ],
       "Gain (Loss) on Sale of Investments": [
+        null,
+        null,
+        null,
+        null,
+        null,
         684.0,
         265.0,
         -175.0,
@@ -2166,6 +2453,11 @@ const saAnalysisData = {
         9.0
       ],
       "Pretax Income": [
+        69903.0,
+        50398.0,
+        37936.0,
+        31206.0,
+        21910.0,
         37936.0,
         31206.0,
         21910.0,
@@ -2188,6 +2480,11 @@ const saAnalysisData = {
         1470.0
       ],
       "Income Tax Expense": [
+        11582.0,
+        7438.0,
+        6026.0,
+        4784.0,
+        3135.0,
         6026.0,
         4784.0,
         3135.0,
@@ -2210,6 +2507,11 @@ const saAnalysisData = {
         13.0
       ],
       "Net Income": [
+        58321.0,
+        42960.0,
+        31910.0,
+        26422.0,
+        18775.0,
         31910.0,
         26422.0,
         18775.0,
@@ -2232,6 +2534,11 @@ const saAnalysisData = {
         1457.0
       ],
       "Net Income to Common": [
+        58321.0,
+        42960.0,
+        31910.0,
+        26422.0,
+        18775.0,
         31910.0,
         26422.0,
         18775.0,
@@ -2254,6 +2561,11 @@ const saAnalysisData = {
         1457.0
       ],
       "Net Income Growth": [
+        2.1063,
+        0.3463,
+        0.2077,
+        0.4073,
+        -0.1501,
         0.6526000000000001,
         0.5918,
         0.26170000000000004,
@@ -2276,6 +2588,11 @@ const saAnalysisData = {
         0.5321
       ],
       "Shares Outstanding (Basic)": [
+        null,
+        null,
+        null,
+        null,
+        null,
         24327.0,
         24366.0,
         24441.0,
@@ -2298,6 +2615,11 @@ const saAnalysisData = {
         24760.0
       ],
       "Shares Outstanding (Diluted)": [
+        null,
+        null,
+        null,
+        null,
+        null,
         24483.0,
         24532.0,
         24611.0,
@@ -2320,6 +2642,11 @@ const saAnalysisData = {
         25240.0
       ],
       "Shares Change (YoY)": [
+        null,
+        null,
+        null,
+        null,
+        null,
         -0.0118,
         -0.0127,
         -0.011200000000000002,
@@ -2342,6 +2669,11 @@ const saAnalysisData = {
         0.0161
       ],
       "EPS (Basic)": [
+        2.4,
+        1.77,
+        1.31,
+        1.08,
+        0.77,
         1.31,
         1.08,
         0.77,
@@ -2364,6 +2696,11 @@ const saAnalysisData = {
         0.06
       ],
       "EPS (Diluted)": [
+        2.39,
+        1.76,
+        1.3,
+        1.08,
+        0.76,
         1.3,
         1.08,
         0.76,
@@ -2386,6 +2723,11 @@ const saAnalysisData = {
         0.06
       ],
       "EPS Growth": [
+        2.1447,
+        0.3538,
+        0.2037,
+        0.4211,
+        -0.1556,
         0.6667000000000001,
         0.6119,
         0.2667,
@@ -2408,6 +2750,11 @@ const saAnalysisData = {
         0.5196000000000001
       ],
       "Free Cash Flow": [
+        null,
+        null,
+        null,
+        null,
+        null,
         22115.0,
         13470.0,
         26187.0,
@@ -2430,6 +2777,11 @@ const saAnalysisData = {
         1784.0
       ],
       "Free Cash Flow Per Share": [
+        null,
+        null,
+        null,
+        null,
+        null,
         0.9,
         0.55,
         1.06,
@@ -2452,6 +2804,11 @@ const saAnalysisData = {
         0.07
       ],
       "Dividend Per Share": [
+        null,
+        null,
+        null,
+        null,
+        null,
         0.01,
         0.01,
         0.01,
@@ -2476,6 +2833,11 @@ const saAnalysisData = {
       "Dividend Growth": [
         null,
         null,
+        null,
+        null,
+        null,
+        null,
+        null,
         1.5,
         1.5,
         1.5,
@@ -2496,6 +2858,11 @@ const saAnalysisData = {
         null
       ],
       "Gross Margin": [
+        null,
+        null,
+        null,
+        null,
+        null,
         0.7341,
         0.7242000000000001,
         0.6052000000000001,
@@ -2518,6 +2885,11 @@ const saAnalysisData = {
         0.6308
       ],
       "Operating Margin": [
+        null,
+        null,
+        null,
+        null,
+        null,
         0.6317,
         0.6084,
         0.4911,
@@ -2540,6 +2912,11 @@ const saAnalysisData = {
         0.3068
       ],
       "Profit Margin": [
+        null,
+        null,
+        null,
+        null,
+        null,
         0.5598,
         0.5653,
         0.4261,
@@ -2562,6 +2939,11 @@ const saAnalysisData = {
         0.2912
       ],
       "Free Cash Flow Margin": [
+        null,
+        null,
+        null,
+        null,
+        null,
         0.38789999999999997,
         0.2882,
         0.5943,
@@ -2584,6 +2966,11 @@ const saAnalysisData = {
         0.3566
       ],
       "EBITDA": [
+        null,
+        null,
+        null,
+        null,
+        null,
         36761.0,
         29109.0,
         22249.0,
@@ -2606,6 +2993,11 @@ const saAnalysisData = {
         1823.0
       ],
       "EBITDA Margin": [
+        null,
+        null,
+        null,
+        null,
+        null,
         0.6448999999999999,
         0.6228,
         0.505,
@@ -2628,6 +3020,11 @@ const saAnalysisData = {
         0.3644
       ],
       "D&A For EBITDA": [
+        null,
+        null,
+        null,
+        null,
+        null,
         751.0,
         669.0,
         611.0,
@@ -2650,6 +3047,11 @@ const saAnalysisData = {
         288.0
       ],
       "EBIT": [
+        null,
+        null,
+        null,
+        null,
+        null,
         36010.0,
         28440.0,
         21638.0,
@@ -2672,6 +3074,11 @@ const saAnalysisData = {
         1535.0
       ],
       "EBIT Margin": [
+        null,
+        null,
+        null,
+        null,
+        null,
         0.6317,
         0.6084,
         0.4911,
@@ -2694,6 +3101,11 @@ const saAnalysisData = {
         0.3068
       ],
       "Effective Tax Rate": [
+        null,
+        null,
+        null,
+        null,
+        null,
         0.1588,
         0.1533,
         0.1431,
@@ -2719,6 +3131,11 @@ const saAnalysisData = {
   },
   "CRWD": {
     "quarters": [
+      "Q2 FY26",
+      "Q1 FY26",
+      "Q4 FY25",
+      "Q3 FY25",
+      "Q2 FY25",
       "Q3 2026",
       "Q2 2026",
       "Q1 2026",
@@ -2742,6 +3159,11 @@ const saAnalysisData = {
     ],
     "metrics": {
       "Revenue": [
+        1385.63,
+        1305.38,
+        1234.24,
+        1168.95,
+        1103.43,
         1234.0,
         1169.0,
         1103.0,
@@ -2764,6 +3186,11 @@ const saAnalysisData = {
         264.93
       ],
       "Revenue Growth (YoY)": [
+        0.2557,
+        0.0578,
+        0.0558,
+        0.0598,
+        0.042,
         0.2218,
         0.21280000000000002,
         0.198,
@@ -2786,6 +3213,11 @@ const saAnalysisData = {
         0.7417
       ],
       "Cost of Revenue": [
+        null,
+        null,
+        null,
+        null,
+        null,
         307.79,
         303.38,
         289.14,
@@ -2808,6 +3240,11 @@ const saAnalysisData = {
         66.73
       ],
       "Gross Profit": [
+        1043.35,
+        993.68,
+        926.44,
+        858.67,
+        815.56,
         926.46,
         865.58,
         814.29,
@@ -2830,6 +3267,11 @@ const saAnalysisData = {
         198.2
       ],
       "Selling, General & Admin": [
+        null,
+        null,
+        null,
+        null,
+        null,
         647.96,
         610.2,
         598.22,
@@ -2852,6 +3294,11 @@ const saAnalysisData = {
         150.05
       ],
       "Research & Development": [
+        null,
+        null,
+        null,
+        null,
+        null,
         347.47,
         329.97,
         334.13,
@@ -2874,6 +3321,11 @@ const saAnalysisData = {
         66.07
       ],
       "Operating Expenses": [
+        null,
+        null,
+        null,
+        null,
+        null,
         995.44,
         940.17,
         932.35,
@@ -2896,6 +3348,11 @@ const saAnalysisData = {
         216.12
       ],
       "Operating Income": [
+        -30.6,
+        13.79,
+        -69.44,
+        -112.98,
+        -118.71,
         -68.98,
         -74.6,
         -118.06,
@@ -2918,6 +3375,11 @@ const saAnalysisData = {
         -17.92
       ],
       "Interest Expense": [
+        null,
+        null,
+        null,
+        null,
+        null,
         -6.93,
         -6.82,
         -6.72,
@@ -2940,6 +3402,11 @@ const saAnalysisData = {
         -1.05
       ],
       "Interest & Investment Income": [
+        null,
+        null,
+        null,
+        null,
+        null,
         50.88,
         50.85,
         45.38,
@@ -2965,6 +3432,11 @@ const saAnalysisData = {
         null,
         null,
         null,
+        null,
+        null,
+        null,
+        null,
+        null,
         0.03,
         null,
         null,
@@ -2984,6 +3456,11 @@ const saAnalysisData = {
         null
       ],
       "Other Non Operating Income (Expenses)": [
+        null,
+        null,
+        null,
+        null,
+        null,
         2.22,
         -2.72,
         -2.32,
@@ -3006,6 +3483,11 @@ const saAnalysisData = {
         2.03
       ],
       "EBT Excluding Unusual Items": [
+        null,
+        null,
+        null,
+        null,
+        null,
         -22.8,
         -33.29,
         -81.71,
@@ -3028,6 +3510,11 @@ const saAnalysisData = {
         -16.94
       ],
       "Merger & Restructuring Charges": [
+        null,
+        null,
+        null,
+        null,
+        null,
         -0.47,
         -38.38,
         -6.6,
@@ -3050,6 +3537,11 @@ const saAnalysisData = {
         2.12
       ],
       "Gain (Loss) on Sale of Investments": [
+        null,
+        null,
+        null,
+        null,
+        null,
         null,
         null,
         -1.58,
@@ -3075,6 +3567,11 @@ const saAnalysisData = {
         null,
         null,
         null,
+        null,
+        null,
+        null,
+        null,
+        null,
         -60.1,
         null,
         null,
@@ -3094,6 +3591,11 @@ const saAnalysisData = {
         null
       ],
       "Pretax Income": [
+        39.06,
+        57.84,
+        -23.27,
+        -71.67,
+        -83.94,
         -23.27,
         -71.67,
         -89.89,
@@ -3116,6 +3618,11 @@ const saAnalysisData = {
         -16.17
       ],
       "Income Tax Expense": [
+        -6.9,
+        -3.62,
+        10.72,
+        5.97,
+        21.11,
         10.72,
         5.97,
         21.11,
@@ -3138,6 +3645,11 @@ const saAnalysisData = {
         2.83
       ],
       "Earnings From Continuing Operations": [
+        null,
+        null,
+        null,
+        null,
+        null,
         -33.99,
         -77.65,
         -110.99,
@@ -3160,6 +3672,11 @@ const saAnalysisData = {
         -19.0
       ],
       "Minority Interest in Earnings": [
+        null,
+        null,
+        null,
+        null,
+        null,
         -0.01,
         -0.03,
         0.79,
@@ -3182,6 +3699,11 @@ const saAnalysisData = {
         null
       ],
       "Net Income": [
+        27.77,
+        59.38,
+        -34.0,
+        -77.67,
+        -104.26,
         -34.0,
         -77.68,
         -110.21,
@@ -3204,6 +3726,11 @@ const saAnalysisData = {
         -19.0
       ],
       "Net Income to Common": [
+        27.77,
+        59.38,
+        -34.0,
+        -77.67,
+        -104.26,
         -34.0,
         -77.68,
         -110.21,
@@ -3226,6 +3753,11 @@ const saAnalysisData = {
         -19.0
       ],
       "Net Income Growth": [
+        1.2664,
+        2.7465,
+        0.5623,
+        0.2953,
+        -0.1298,
         null,
         null,
         null,
@@ -3248,6 +3780,11 @@ const saAnalysisData = {
         null
       ],
       "Shares Outstanding (Basic)": [
+        null,
+        null,
+        null,
+        null,
+        null,
         251.0,
         250.0,
         248.0,
@@ -3270,6 +3807,11 @@ const saAnalysisData = {
         222.0
       ],
       "Shares Outstanding (Diluted)": [
+        null,
+        null,
+        null,
+        null,
+        null,
         251.0,
         250.0,
         248.0,
@@ -3292,6 +3834,11 @@ const saAnalysisData = {
         222.0
       ],
       "Shares Change (YoY)": [
+        null,
+        null,
+        null,
+        null,
+        null,
         0.0236,
         -0.0054,
         -0.0069,
@@ -3314,6 +3861,11 @@ const saAnalysisData = {
         0.0681
       ],
       "EPS (Basic)": [
+        0.03,
+        0.04,
+        -0.04,
+        -0.08,
+        -0.11,
         -0.14,
         -0.31,
         -0.44,
@@ -3336,6 +3888,11 @@ const saAnalysisData = {
         -0.09
       ],
       "EPS (Diluted)": [
+        0.03,
+        0.04,
+        -0.04,
+        -0.08,
+        -0.11,
         -0.14,
         -0.31,
         -0.44,
@@ -3358,6 +3915,11 @@ const saAnalysisData = {
         -0.09
       ],
       "EPS Growth": [
+        1.2727,
+        1.2857,
+        0.871,
+        0.8182,
+        0.7027,
         null,
         null,
         null,
@@ -3380,6 +3942,11 @@ const saAnalysisData = {
         null
       ],
       "Free Cash Flow": [
+        null,
+        null,
+        null,
+        null,
+        null,
         314.15,
         302.34,
         298.36,
@@ -3402,6 +3969,11 @@ const saAnalysisData = {
         101.91
       ],
       "Free Cash Flow Per Share": [
+        null,
+        null,
+        null,
+        null,
+        null,
         1.25,
         1.21,
         1.2,
@@ -3424,6 +3996,11 @@ const saAnalysisData = {
         0.46
       ],
       "Gross Margin": [
+        null,
+        null,
+        null,
+        null,
+        null,
         0.7506,
         0.7404999999999999,
         0.738,
@@ -3446,6 +4023,11 @@ const saAnalysisData = {
         0.7481
       ],
       "Operating Margin": [
+        null,
+        null,
+        null,
+        null,
+        null,
         -0.0559,
         -0.0638,
         -0.107,
@@ -3468,6 +4050,11 @@ const saAnalysisData = {
         -0.0677
       ],
       "Profit Margin": [
+        null,
+        null,
+        null,
+        null,
+        null,
         -0.0275,
         -0.0664,
         -0.0999,
@@ -3490,6 +4077,11 @@ const saAnalysisData = {
         -0.0717
       ],
       "Free Cash Flow Margin": [
+        null,
+        null,
+        null,
+        null,
+        null,
         0.2545,
         0.2586,
         0.2704,
@@ -3512,6 +4104,11 @@ const saAnalysisData = {
         0.3847
       ],
       "EBITDA": [
+        null,
+        null,
+        null,
+        null,
+        null,
         -17.73,
         -26.16,
         -71.5,
@@ -3534,6 +4131,11 @@ const saAnalysisData = {
         -8.37
       ],
       "EBITDA Margin": [
+        null,
+        null,
+        null,
+        null,
+        null,
         -0.0144,
         -0.022400000000000003,
         -0.06480000000000001,
@@ -3556,6 +4158,11 @@ const saAnalysisData = {
         -0.0316
       ],
       "D&A For EBITDA": [
+        null,
+        null,
+        null,
+        null,
+        null,
         51.25,
         48.44,
         46.56,
@@ -3578,6 +4185,11 @@ const saAnalysisData = {
         9.55
       ],
       "EBIT": [
+        null,
+        null,
+        null,
+        null,
+        null,
         -68.98,
         -74.6,
         -118.06,
@@ -3600,6 +4212,11 @@ const saAnalysisData = {
         -17.92
       ],
       "EBIT Margin": [
+        null,
+        null,
+        null,
+        null,
+        null,
         -0.0559,
         -0.0638,
         -0.107,
@@ -3627,6 +4244,11 @@ const saAnalysisData = {
         null,
         null,
         null,
+        null,
+        null,
+        null,
+        null,
+        null,
         0.1895,
         0.1422,
         0.1985,
@@ -3644,6 +4266,11 @@ const saAnalysisData = {
         null
       ],
       "Revenue as Reported": [
+        null,
+        null,
+        null,
+        null,
+        null,
         1234.0,
         1169.0,
         1103.0,
@@ -3669,6 +4296,8 @@ const saAnalysisData = {
   },
   "BAC": {
     "quarters": [
+      "Q2 2026",
+      "Q1 2026",
       "Q4 2025",
       "Q3 2025",
       "Q2 2025",
@@ -3692,6 +4321,8 @@ const saAnalysisData = {
     ],
     "metrics": {
       "Interest Income on Loans": [
+        null,
+        33359.0,
         34261.0,
         35366.0,
         34873.0,
@@ -3714,6 +4345,8 @@ const saAnalysisData = {
         11395.0
       ],
       "Total Interest Income": [
+        null,
+        null,
         34261.0,
         35366.0,
         34873.0,
@@ -3736,6 +4369,8 @@ const saAnalysisData = {
         11395.0
       ],
       "Interest Paid on Deposits": [
+        null,
+        17614.0,
         18511.0,
         20133.0,
         20203.0,
@@ -3758,6 +4393,8 @@ const saAnalysisData = {
         1198.0
       ],
       "Total Interest Expense": [
+        null,
+        null,
         18511.0,
         20133.0,
         20203.0,
@@ -3780,6 +4417,8 @@ const saAnalysisData = {
         1198.0
       ],
       "Net Interest Income": [
+        null,
+        15745.0,
         15750.0,
         15233.0,
         14670.0,
@@ -3802,6 +4441,8 @@ const saAnalysisData = {
         10197.0
       ],
       "Net Interest Income Growth (YoY)": [
+        null,
+        null,
         0.0969,
         0.0906,
         0.0707,
@@ -3825,6 +4466,8 @@ const saAnalysisData = {
       ],
       "Gain (Loss) on Sale of Investments": [
         null,
+        null,
+        null,
         -1010.0,
         -1163.0,
         -1007.0,
@@ -3846,6 +4489,8 @@ const saAnalysisData = {
         -276.0
       ],
       "Other Non-Interest Income": [
+        null,
+        null,
         12617.0,
         13865.0,
         12956.0,
@@ -3868,6 +4513,8 @@ const saAnalysisData = {
         12900.0
       ],
       "Total Non-Interest Income": [
+        null,
+        null,
         12617.0,
         12855.0,
         11793.0,
@@ -3890,6 +4537,8 @@ const saAnalysisData = {
         12624.0
       ],
       "Non-Interest Income Growth (YoY)": [
+        null,
+        null,
         0.1482,
         0.1298,
         0.0101,
@@ -3912,6 +4561,8 @@ const saAnalysisData = {
         0.1868
       ],
       "Revenues Before Loan Losses": [
+        null,
+        null,
         28367.0,
         28088.0,
         26463.0,
@@ -3934,6 +4585,8 @@ const saAnalysisData = {
         22821.0
       ],
       "Provision for Loan Losses": [
+        null,
+        null,
         1308.0,
         1295.0,
         1592.0,
@@ -3956,6 +4609,8 @@ const saAnalysisData = {
         -1860.0
       ],
       "Revenue": [
+        null,
+        30272.0,
         27059.0,
         26793.0,
         24871.0,
@@ -3978,6 +4633,8 @@ const saAnalysisData = {
         24681.0
       ],
       "Revenue Growth (YoY)": [
+        null,
+        0.1694,
         0.1324,
         0.12560000000000002,
         0.042,
@@ -4000,6 +4657,8 @@ const saAnalysisData = {
         0.37070000000000003
       ],
       "Salaries and Employee Benefits": [
+        null,
+        11334.0,
         10602.0,
         10523.0,
         10332.0,
@@ -4022,6 +4681,8 @@ const saAnalysisData = {
         8883.0
       ],
       "Occupancy Expenses": [
+        null,
+        null,
         1884.0,
         1872.0,
         1836.0,
@@ -4044,6 +4705,8 @@ const saAnalysisData = {
         1830.0
       ],
       "Selling, General & Administrative": [
+        null,
+        14030.0,
         3158.0,
         3005.0,
         3022.0,
@@ -4066,6 +4729,8 @@ const saAnalysisData = {
         3052.0
       ],
       "Other Non-Interest Expense": [
+        null,
+        2018.0,
         1793.0,
         1937.0,
         1993.0,
@@ -4088,6 +4753,8 @@ const saAnalysisData = {
         1750.0
       ],
       "Total Non-Interest Expense": [
+        null,
+        null,
         17437.0,
         17337.0,
         17183.0,
@@ -4110,6 +4777,8 @@ const saAnalysisData = {
         15515.0
       ],
       "EBT Excluding Unusual Items": [
+        null,
+        null,
         9622.0,
         9456.0,
         7688.0,
@@ -4140,6 +4809,8 @@ const saAnalysisData = {
         null,
         null,
         null,
+        null,
+        null,
         -3700.0,
         null,
         null,
@@ -4154,6 +4825,8 @@ const saAnalysisData = {
         null
       ],
       "Pretax Income": [
+        null,
+        10404.0,
         9622.0,
         9456.0,
         7688.0,
@@ -4176,6 +4849,8 @@ const saAnalysisData = {
         9166.0
       ],
       "Income Tax Expense": [
+        null,
+        1820.0,
         1975.0,
         987.0,
         572.0,
@@ -4198,6 +4873,8 @@ const saAnalysisData = {
         1116.0
       ],
       "Net Income": [
+        null,
+        8584.0,
         7647.0,
         8469.0,
         7116.0,
@@ -4220,6 +4897,8 @@ const saAnalysisData = {
         8050.0
       ],
       "Preferred Dividends & Other Adjustments": [
+        null,
+        null,
         328.0,
         429.0,
         291.0,
@@ -4242,6 +4921,8 @@ const saAnalysisData = {
         490.0
       ],
       "Net Income to Common": [
+        null,
+        8155.0,
         7319.0,
         8040.0,
         6825.0,
@@ -4264,6 +4945,8 @@ const saAnalysisData = {
         7560.0
       ],
       "Net Income Growth": [
+        null,
+        0.1606,
         0.14730000000000001,
         0.2281,
         0.0317,
@@ -4286,6 +4969,8 @@ const saAnalysisData = {
         1.0075
       ],
       "Basic Shares Outstanding": [
+        7151.2,
+        7256.1,
         7365.0,
         7466.0,
         7581.0,
@@ -4308,6 +4993,8 @@ const saAnalysisData = {
         8700.0
       ],
       "Diluted Shares Outstanding": [
+        7294.2,
+        7417.5,
         7547.0,
         7627.0,
         7652.0,
@@ -4330,6 +5017,8 @@ const saAnalysisData = {
         8756.0
       ],
       "Shares Change (YoY)": [
+        null,
+        null,
         -0.0378,
         -0.0348,
         -0.038900000000000004,
@@ -4352,6 +5041,8 @@ const saAnalysisData = {
         -0.0121
       ],
       "EPS (Basic)": [
+        1.22,
+        1.12,
         0.99,
         1.08,
         0.9,
@@ -4374,6 +5065,8 @@ const saAnalysisData = {
         0.87
       ],
       "EPS (Diluted)": [
+        1.21,
+        1.11,
         0.98,
         1.06,
         0.89,
@@ -4396,6 +5089,8 @@ const saAnalysisData = {
         0.86
       ],
       "EPS Growth": [
+        0.3596,
+        0.2333,
         0.209,
         0.3147,
         0.0723,
@@ -4418,6 +5113,8 @@ const saAnalysisData = {
         1.15
       ],
       "Dividend Per Share": [
+        null,
+        null,
         0.28,
         0.28,
         0.26,
@@ -4440,6 +5137,8 @@ const saAnalysisData = {
         0.18
       ],
       "Dividend Growth": [
+        null,
+        null,
         0.07690000000000001,
         0.07690000000000001,
         0.0833,
@@ -4462,6 +5161,8 @@ const saAnalysisData = {
         null
       ],
       "Effective Tax Rate": [
+        null,
+        null,
         0.2053,
         0.10439999999999999,
         0.07440000000000001,
