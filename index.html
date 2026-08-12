@@ -31,29 +31,14 @@
   <script src="data/analysis.js"></script>
   <script src="data/currency.js"></script>
 </head>
-<body>
+  <div id="app">
+    <!-- ── Top Navbar ───────────────────────────── -->
+    <nav id="sidebar" class="top-navbar" aria-label="Main navigation"></nav>
 
-  <!-- ── Sidebar ───────────────────────────────── -->
-  <nav id="sidebar" aria-label="Main navigation"></nav>
-
-  <!-- ── Main ─────────────────────────────────── -->
-  <div id="main">
-
-    <!-- Topbar -->
-    <header id="topbar">
-      <div style="display:flex;align-items:center;gap:12px;">
-        <span style="font-size:20px">📈</span>
-        <span class="topbar-title" id="topbar-title">Dashboard</span>
-      </div>
-      <div class="topbar-date">
-        <div class="live-dot" aria-hidden="true"></div>
-        <span id="topbar-date">--</span>
-      </div>
-    </header>
-
-    <!-- Views -->
-    <main id="view" role="main" aria-live="polite"></main>
-
+    <!-- ── Main Content ─────────────────────────── -->
+    <div id="main">
+      <main id="view" role="main" aria-live="polite"></main>
+    </div>
   </div>
 
   <!-- ── Components ─────────────────────────────── -->

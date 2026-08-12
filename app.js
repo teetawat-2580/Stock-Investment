@@ -14,30 +14,36 @@ const VIEWS = [
 
 let currentView = 'dashboard';
 
-// ── Build Sidebar ──────────────────────────────
+// ── Build Sidebar / Top Navbar ─────────────────
 function buildSidebar() {
   const sidebar = document.getElementById('sidebar');
+  if (!sidebar) return;
+
   let html = `
-    <div class="sidebar-logo">
+    <div class="sidebar-logo" onclick="navigateTo('dashboard')" style="cursor:pointer;">
       <div class="logo-icon">📈</div>
       <div class="logo-text">
         <h1>Stock Tracker</h1>
         <span>2026 Portfolio</span>
       </div>
-    </div>`;
+    </div>
+    <div class="sidebar-nav">`;
 
-  let lastSection = '';
   VIEWS.forEach(v => {
-    if (v.section !== lastSection) {
-      html += `<div class="nav-section-label">${v.section}</div>`;
-      lastSection = v.section;
-    }
     html += `
       <div class="nav-item${v.id === currentView ? ' active' : ''}" data-view="${v.id}" onclick="navigateTo('${v.id}')">
         <span class="nav-icon">${v.icon}</span>
         <span class="nav-label">${v.label}</span>
       </div>`;
   });
+
+  html += `
+    </div>
+    <div class="topbar-date" style="margin-left:auto;padding-left:12px;flex-shrink:0;">
+      <div class="live-dot" aria-hidden="true"></div>
+      <span id="topbar-date">--</span>
+    </div>`;
+
   sidebar.innerHTML = html;
 }
 
@@ -58,11 +64,8 @@ function navigateTo(viewId) {
 
   currentView = viewId;
   document.getElementById(`vp-${viewId}`).classList.add('active');
-  document.querySelector(`[data-view="${viewId}"]`).classList.add('active');
-
-  // Update topbar title
-  const v = VIEWS.find(x => x.id === viewId);
-  if (v) document.getElementById('topbar-title').textContent = v.label;
+  const activeNav = document.querySelector(`[data-view="${viewId}"]`);
+  if (activeNav) activeNav.classList.add('active');
 
   // Scroll main container to top
   const main = document.getElementById('main');
