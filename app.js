@@ -62,7 +62,11 @@ function navigateTo(viewId) {
 
   // Update topbar title
   const v = VIEWS.find(x => x.id === viewId);
-  document.getElementById('topbar-title').textContent = v.label;
+  if (v) document.getElementById('topbar-title').textContent = v.label;
+
+  // Scroll main container to top
+  const main = document.getElementById('main');
+  if (main) main.scrollTop = 0;
 
   // Render the view
   renderView(viewId);

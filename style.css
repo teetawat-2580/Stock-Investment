@@ -41,7 +41,7 @@ body {
   font-family: 'Outfit', sans-serif;
   background: var(--bg-base);
   color: var(--text-primary);
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   overflow: hidden;
   font-size: 15px;
@@ -127,7 +127,7 @@ body {
 #main {
   margin-left: var(--sidebar-w);
   flex: 1;
-  min-height: 100vh;
+  height: 100vh;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
