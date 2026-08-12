@@ -1,7 +1,10 @@
 import yfinance as yf
 import json
 import os
-from datetime import datetime
+import urllib.request
+import xml.etree.ElementTree as ET
+from datetime import datetime, timezone
+import dateutil.parser
 
 tickers = ['JPM', 'AMZN', 'NVDA', 'TSLA', 'BA', 'GOOGL', 'BAC', 'V', 'INTC', 'CRWD', 'NEM', 'RTX', 'LMT']
 
@@ -27,45 +30,45 @@ static_events = [
 ]
 
 fetched_news = []
+seen_titles = set()
+
+def normalize_date(dt_str):
+    try:
+        dt = dateutil.parser.parse(dt_str)
+        return dt.strftime('%Y-%m-%d')
+    except:
+        return datetime.now().strftime('%Y-%m-%d')
 
 for symbol in tickers:
-    print(f"Fetching live news for {symbol}...")
+    print(f"Aggregating news for {symbol}...")
+    
+    # Source 1: yfinance API
     try:
         t = yf.Ticker(symbol)
-        news_items = t.news
-        if not news_items:
-            continue
-            
+        news_items = t.news or []
         for item in news_items:
             content = item.get('content', {})
             title = content.get('title')
-            if not title:
+            if not title or title in seen_titles:
                 continue
                 
+            seen_titles.add(title)
             pub_date = content.get('pubDate') or content.get('displayTime')
-            if pub_date:
-                date_str = pub_date[:10]
-            else:
-                date_str = datetime.now().strftime('%Y-%m-%d')
-                
+            date_str = normalize_date(pub_date) if pub_date else datetime.now().strftime('%Y-%m-%d')
             provider = content.get('provider', {}).get('displayName', 'Yahoo Finance')
             summary = content.get('summary', '')
             
-            # Extract link
             click_url = None
             if content.get('canonicalUrl') and content['canonicalUrl'].get('url'):
                 click_url = content['canonicalUrl']['url']
             elif content.get('clickThroughUrl') and content['clickThroughUrl'].get('url'):
                 click_url = content['clickThroughUrl']['url']
-            elif content.get('previewUrl'):
-                click_url = content['previewUrl']
             else:
                 click_url = f"https://finance.yahoo.com/quote/{symbol}/news/"
                 
             remark_text = f"News via {provider}"
             if summary:
-                short_sum = summary[:120] + '...' if len(summary) > 120 else summary
-                remark_text += f" — {short_sum}"
+                remark_text += f" — {summary[:120]}..."
                 
             fetched_news.append({
                 "stock": symbol,
@@ -75,13 +78,66 @@ for symbol in tickers:
                 "remark": remark_text,
                 "url": click_url
             })
-            
     except Exception as e:
-        print(f"Error fetching news for {symbol}: {e}")
+        print(f"yfinance error for {symbol}: {e}")
 
-print(f"Total live news items fetched: {len(fetched_news)}")
+    # Source 2: Yahoo RSS
+    try:
+        url = f"https://feeds.finance.yahoo.com/rss/2.0/headline?s={symbol}&region=US&lang=en-US"
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+        res = urllib.request.urlopen(req, timeout=5)
+        tree = ET.fromstring(res.read())
+        for item in tree.findall('./channel/item'):
+            title = item.find('title').text if item.find('title') is not None else None
+            if not title or title in seen_titles:
+                continue
+                
+            seen_titles.add(title)
+            pub_date_txt = item.find('pubDate').text if item.find('pubDate') is not None else None
+            date_str = normalize_date(pub_date_txt) if pub_date_txt else datetime.now().strftime('%Y-%m-%d')
+            link = item.find('link').text if item.find('link') is not None else f"https://finance.yahoo.com/quote/{symbol}/news/"
+            
+            fetched_news.append({
+                "stock": symbol,
+                "date": date_str,
+                "event": title,
+                "type": "NEWS",
+                "remark": "News via Yahoo Finance RSS",
+                "url": link
+            })
+    except Exception as e:
+        print(f"Yahoo RSS error for {symbol}: {e}")
 
-# Combine static events (converted to NOTE) and live news items
+    # Source 3: Google News RSS
+    try:
+        url = f"https://news.google.com/rss/search?q={symbol}+stock&hl=en-US&gl=US&ceid=US:en"
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+        res = urllib.request.urlopen(req, timeout=5)
+        tree = ET.fromstring(res.read())
+        for item in tree.findall('./channel/item')[:25]:
+            title = item.find('title').text if item.find('title') is not None else None
+            if not title or title in seen_titles:
+                continue
+                
+            seen_titles.add(title)
+            pub_date_txt = item.find('pubDate').text if item.find('pubDate') is not None else None
+            date_str = normalize_date(pub_date_txt) if pub_date_txt else datetime.now().strftime('%Y-%m-%d')
+            link = item.find('link').text if item.find('link') is not None else f"https://www.tradingview.com/chart/?symbol={symbol}"
+            
+            fetched_news.append({
+                "stock": symbol,
+                "date": date_str,
+                "event": title,
+                "type": "NEWS",
+                "remark": "News via Google News Feed",
+                "url": link
+            })
+    except Exception as e:
+        print(f"Google News RSS error for {symbol}: {e}")
+
+print(f"Total aggregated news stories: {len(fetched_news)}")
+
+# Combine static events and aggregated news stories
 all_events = fetched_news + static_events
 
 events_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'events.js')

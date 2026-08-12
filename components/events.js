@@ -539,12 +539,37 @@ function renderEventTimeline(stockFilter) {
 
   let items = allEvents.filter(e => stockFilter === 'all' || e.stock === stockFilter);
 
-  // If a specific date is selected from chart click, filter to that date!
+  // If a specific date is selected from chart click, filter with timezone overlap window (±1 day)
   if (selectedNewsDate) {
-    items = items.filter(e => e.date === selectedNewsDate);
+    const selTime = new Date(selectedNewsDate).getTime();
+    items = items.filter(e => {
+      if (!e.date) return false;
+      if (e.date === selectedNewsDate) return true;
+      const itemTime = new Date(e.date).getTime();
+      const diffDays = Math.abs((itemTime - selTime) / 86400000);
+      return diffDays <= 1.2;
+    });
   }
 
   items.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  if (items.length === 0) {
+    const targetSymbol = (stockFilter === 'all' ? 'JPM' : stockFilter).toUpperCase();
+    return tl.innerHTML = `
+      <div class="card empty" style="padding:28px;text-align:center;">
+        <div style="font-size:16px;font-weight:700;color:var(--text-primary);margin-bottom:6px">ไม่พบบันทึกในคลังข้อมูลสำหรับวันที่ ${formatDate(selectedNewsDate)}</div>
+        <p style="font-size:12px;color:var(--text-secondary);margin-bottom:16px">คุณสามารถดูข่าวสารสดบน TradingView หรือ Yahoo Finance สำหรับหุ้น ${targetSymbol} ณ วันดังกล่าวได้ทันที</p>
+        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+          <a href="https://www.tradingview.com/chart/?symbol=${targetSymbol}" target="_blank" rel="noopener noreferrer" class="btn-link-action" style="background:rgba(255,183,77,0.1);color:var(--orange);border-color:rgba(255,183,77,0.3)">
+            📈 ค้นหาข่าวบน TradingView ↗
+          </a>
+          <a href="https://finance.yahoo.com/quote/${targetSymbol}/news/" target="_blank" rel="noopener noreferrer" class="btn-link-action">
+            🔗 ค้นหาข่าวบน Yahoo Finance ↗
+          </a>
+        </div>
+      </div>
+    `;
+  }
 
   tl.innerHTML = items.map(e => {
     const isNews = e.type === 'NEWS';
@@ -594,7 +619,7 @@ function renderEventTimeline(stockFilter) {
           ${e.remark ? `<div class="timeline-remark" style="margin-top:6px;font-size:12px;color:var(--text-secondary)">📌 ${e.remark}</div>` : ''}
         </div>
       </div>`;
-  }).join('') || '<div class="empty">ไม่มีข่าวหรือเหตุการณ์ในวันที่เลือก</div>';
+  }).join('');
 }
 
 // ── 2. Links Sub-tab ─────────────────────────────────────────
