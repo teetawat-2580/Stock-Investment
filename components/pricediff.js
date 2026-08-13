@@ -247,23 +247,19 @@ function renderMultiLineChart() {
     allDates = allDates.slice(-daysLimit);
   }
 
-  // Build datasets normalized to % change baseline
+  // Build datasets: Daily % Change from Previous Day Price ((Pt - Pt-1) / Pt-1 * 100)
   const datasets = selectedDiffStocks.map((symbol, i) => {
     const prices = stockPricesData[symbol] || {};
     const stockDates = Object.keys(prices).sort();
-    
-    // Find initial baseline price for the selected period
-    let basePrice = null;
-    allDates.forEach(d => {
-      if (basePrice == null && prices[d] != null) {
-        basePrice = prices[d];
-      }
-    });
 
     const dataPoints = allDates.map(d => {
-      const p = prices[d];
-      if (p == null || basePrice == null || basePrice === 0) return null;
-      return roundNum(((p - basePrice) / basePrice) * 100, 2);
+      const idx = stockDates.indexOf(d);
+      if (idx <= 0) return null;
+      const prevDate = stockDates[idx - 1];
+      const curPrice = prices[d];
+      const prevPrice = prices[prevDate];
+      if (curPrice == null || prevPrice == null || prevPrice === 0) return null;
+      return roundNum(((curPrice - prevPrice) / prevPrice) * 100, 2);
     });
 
     const color = STOCK_LINE_COLORS[i % STOCK_LINE_COLORS.length];
@@ -273,7 +269,7 @@ function renderMultiLineChart() {
       data: dataPoints,
       borderColor: color,
       backgroundColor: color,
-      borderWidth: 2.5,
+      borderWidth: 2,
       pointRadius: 2.5,
       pointHoverRadius: 6,
       tension: 0.2,
@@ -303,8 +299,13 @@ function renderMultiLineChart() {
             label: ctx => {
               const sym = ctx.dataset.label;
               const val = ctx.raw;
+              const idx = ctx.dataIndex;
+              const dateRaw = allDates[idx];
+              const prices = stockPricesData[sym] || {};
+              const curP = prices[dateRaw];
               const sign = val >= 0 ? '+' : '';
-              return ` ${sym}: ${sign}${val}% return`;
+              const pStr = curP != null ? ` ($${formatNum(curP, 2)})` : '';
+              return ` ${sym}: ${sign}${val}% (vs Prev Day)${pStr}`;
             }
           }
         }
