@@ -8,6 +8,7 @@ const VIEWS = [
   { id: 'tradelog',     label: 'Trade Log',         icon: '📋', section: 'OVERVIEW' },
   { id: 'events',       label: 'Events',            icon: '📅', section: 'OVERVIEW' },
   { id: 'pricediff',    label: 'Price Diff',        icon: '⚡', section: 'OVERVIEW' },
+  { id: 'stockcompare', label: 'Stock Compare',     icon: '⚖️', section: 'ANALYSIS' },
   { id: 'fundamentals', label: 'US Fundamentals',   icon: '📈', section: 'ANALYSIS' },
   { id: 'analysis',     label: 'Stock Analysis',    icon: '🔬', section: 'ANALYSIS' },
   { id: 'currency',     label: 'Currency',          icon: '💱', section: 'TOOLS'    }
@@ -85,6 +86,7 @@ function renderView(viewId) {
     case 'tradelog':     renderTradelog(container);     break;
     case 'events':       renderEvents(container);       break;
     case 'pricediff':    renderPricediff(container);    break;
+    case 'stockcompare': renderStockCompare(container); break;
     case 'fundamentals': renderFundamentals(container); break;
     case 'analysis':     renderAnalysis(container);     break;
     case 'currency':     renderCurrency(container);     break;

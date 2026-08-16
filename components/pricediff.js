@@ -46,8 +46,11 @@ function renderPricediff(container) {
           <p style="font-size:12px;color:var(--text-secondary)">คลิกหุ้นที่ต้องการเลือก/ยกเลิกเลือก (กำลังเลือก ${selectedDiffStocks.length}/5 หุ้น)</p>
         </div>
 
-        <!-- Time Range Selector Buttons -->
+        <!-- Time Range Selector Buttons & Stock Compare Link -->
         <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+          <button class="btn-link-action" style="font-size:12px;padding:5px 12px;margin-right:8px;" onclick="navigateTo('stockcompare')">
+            ⚖️ Open Full Stock Comparison &amp; Correlation Tab ↗
+          </button>
           <span style="font-size:11px;color:var(--text-muted)">ช่วงเวลา:</span>
           <button class="pill${pricediffTimeRange === '1M' ? ' active' : ''}" style="font-size:11px;padding:3px 10px;" onclick="setTimeDiffRange('1M')">1M</button>
           <button class="pill${pricediffTimeRange === '3M' ? ' active' : ''}" style="font-size:11px;padding:3px 10px;" onclick="setTimeDiffRange('3M')">3M</button>
@@ -247,19 +250,24 @@ function renderMultiLineChart() {
     allDates = allDates.slice(-daysLimit);
   }
 
-  // Build datasets: Daily % Change from Previous Day Price ((Pt - Pt-1) / Pt-1 * 100)
+  // Build datasets: Cumulative % Return from Start Date of Time Range
   const datasets = selectedDiffStocks.map((symbol, i) => {
     const prices = stockPricesData[symbol] || {};
     const stockDates = Object.keys(prices).sort();
 
+    // Find baseline price on start date
+    let basePrice = null;
+    for (let d of allDates) {
+      if (prices[d] != null && prices[d] > 0) {
+        basePrice = prices[d];
+        break;
+      }
+    }
+
     const dataPoints = allDates.map(d => {
-      const idx = stockDates.indexOf(d);
-      if (idx <= 0) return null;
-      const prevDate = stockDates[idx - 1];
       const curPrice = prices[d];
-      const prevPrice = prices[prevDate];
-      if (curPrice == null || prevPrice == null || prevPrice === 0) return null;
-      return roundNum(((curPrice - prevPrice) / prevPrice) * 100, 2);
+      if (curPrice == null || basePrice == null || basePrice === 0) return null;
+      return roundNum(((curPrice - basePrice) / basePrice) * 100, 2);
     });
 
     const color = STOCK_LINE_COLORS[i % STOCK_LINE_COLORS.length];
@@ -270,7 +278,7 @@ function renderMultiLineChart() {
       borderColor: color,
       backgroundColor: color,
       borderWidth: 2,
-      pointRadius: 2.5,
+      pointRadius: 2,
       pointHoverRadius: 6,
       tension: 0.2,
       fill: false
@@ -305,7 +313,7 @@ function renderMultiLineChart() {
               const curP = prices[dateRaw];
               const sign = val >= 0 ? '+' : '';
               const pStr = curP != null ? ` ($${formatNum(curP, 2)})` : '';
-              return ` ${sym}: ${sign}${val}% (vs Prev Day)${pStr}`;
+              return ` ${sym}: ${sign}${val}% return (${pStr})`;
             }
           }
         }
