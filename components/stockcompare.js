@@ -6,22 +6,25 @@ let compareTimeRange = '1Y'; // '1M', '3M', '6M', '1Y', '3Y', '5Y', 'ALL'
 let compareMode = 'cumulative'; // 'cumulative', 'rebased', 'grid', 'correlation'
 let compareSearch = '';
 
+// Stock Master List with Categories
 const COMPARE_STOCK_LIST = [
-  { symbol: 'JPM',   name: 'JPMorgan Chase & Co.',    type: 'US Stock', category: 'Financials' },
-  { symbol: 'AMZN',  name: 'Amazon.com Inc.',         type: 'US Stock', category: 'Tech/Retail' },
-  { symbol: 'NVDA',  name: 'NVIDIA Corporation',      type: 'US Stock', category: 'Semiconductors' },
-  { symbol: 'TSLA',  name: 'Tesla Inc.',              type: 'US Stock', category: 'Automotive/EV' },
-  { symbol: 'GOOGL', name: 'Alphabet Inc.',           type: 'US Stock', category: 'Tech/Search' },
-  { symbol: 'BA',    name: 'Boeing Co.',              type: 'US Stock', category: 'Aerospace' },
-  { symbol: 'BAC',   name: 'Bank of America Corp.',   type: 'US Stock', category: 'Financials' },
-  { symbol: 'V',     name: 'Visa Inc.',               type: 'US Stock', category: 'Payments' },
-  { symbol: 'INTC',  name: 'Intel Corporation',       type: 'US Stock', category: 'Semiconductors' },
-  { symbol: 'CRWD',  name: 'CrowdStrike Holdings',   type: 'US Stock', category: 'Cybersecurity' },
-  { symbol: 'NEM',   name: 'Newmont Corporation',     type: 'US Stock', category: 'Gold Mining' },
-  { symbol: 'RTX',   name: 'RTX Corporation',         type: 'US Stock', category: 'Defense' },
-  { symbol: 'LMT',   name: 'Lockheed Martin Corp.',   type: 'US Stock', category: 'Defense' },
-  { symbol: 'QQQM',  name: 'Invesco NASDAQ 100 ETF',  type: 'ETF',      category: 'Index ETF' },
-  { symbol: 'SLV',   name: 'iShares Silver Trust',    type: 'Commodity',category: 'Commodities' }
+  { symbol: 'NVDA',  name: 'NVIDIA Corporation',      type: 'US Stock', category: 'Semiconductors', icon: '⚡' },
+  { symbol: 'INTC',  name: 'Intel Corporation',       type: 'US Stock', category: 'Semiconductors', icon: '💻' },
+  { symbol: 'AMZN',  name: 'Amazon.com Inc.',         type: 'US Stock', category: 'Tech & E-Commerce', icon: '🛒' },
+  { symbol: 'GOOGL', name: 'Alphabet Inc.',           type: 'US Stock', category: 'Tech & Search', icon: '🔍' },
+  { symbol: 'CRWD',  name: 'CrowdStrike Holdings',   type: 'US Stock', category: 'Tech & Cybersecurity', icon: '🛡️' },
+  { symbol: 'JPM',   name: 'JPMorgan Chase & Co.',    type: 'US Stock', category: 'Financials & Banking', icon: '🏦' },
+  { symbol: 'BAC',   name: 'Bank of America Corp.',   type: 'US Stock', category: 'Financials & Banking', icon: '🏛️' },
+  { symbol: 'V',     name: 'Visa Inc.',               type: 'US Stock', category: 'Payments & Fintech', icon: '💳' },
+  { symbol: 'TSLA',  name: 'Tesla Inc.',              type: 'US Stock', category: 'Automotive & EV', icon: '🚗' },
+  { symbol: 'BA',    name: 'Boeing Co.',              type: 'US Stock', category: 'Aerospace & Defense', icon: '✈️' },
+  { symbol: 'RTX',   name: 'RTX Corporation',         type: 'US Stock', category: 'Aerospace & Defense', icon: '🚀' },
+  { symbol: 'LMT',   name: 'Lockheed Martin Corp.',   type: 'US Stock', category: 'Aerospace & Defense', icon: '🛩️' },
+  { symbol: 'NEM',   name: 'Newmont Corporation',     type: 'US Stock', category: 'Gold & Mining', icon: '⛏️' },
+  { symbol: 'SLV',   name: 'iShares Silver Trust',    type: 'Commodity',category: 'Gold & Commodities', icon: '🥈' },
+  { symbol: 'QQQM',  name: 'Invesco NASDAQ 100 ETF',  type: 'ETF',      category: 'Index ETFs', icon: '📊' },
+  { symbol: 'VZ',    name: 'Verizon Communications',  type: 'US Stock', category: 'Telecom & Utilities', icon: '📞' },
+  { symbol: 'T',     name: 'AT&T Inc.',               type: 'US Stock', category: 'Telecom & Utilities', icon: '📡' }
 ];
 
 const COMPARE_COLORS = [
@@ -31,13 +34,20 @@ const COMPARE_COLORS = [
 
 // Presets for quick selection
 const STOCK_PRESETS = [
-  { label: '🚀 Tech & Growth', stocks: ['NVDA', 'AMZN', 'GOOGL', 'TSLA', 'CRWD'] },
+  { label: '🚀 Tech Giants', stocks: ['NVDA', 'AMZN', 'GOOGL', 'CRWD', 'INTC'] },
   { label: '🏦 Financials & Payments', stocks: ['JPM', 'BAC', 'V'] },
   { label: '🛡️ Defense & Gold', stocks: ['RTX', 'LMT', 'NEM', 'BA'] },
-  { label: '⚖️ vs QQQM Benchmark', stocks: ['QQQM', 'NVDA', 'JPM', 'AMZN'] }
+  { label: '📡 Telecom & High Dividend', stocks: ['VZ', 'T', 'JPM'] },
+  { label: '⚖️ vs QQQM Index', stocks: ['QQQM', 'NVDA', 'JPM', 'AMZN'] }
 ];
 
 function renderStockCompare(container) {
+  // Get list of unselected stocks for dropdown
+  const unselectedStocks = COMPARE_STOCK_LIST.filter(s => !selectedCompareStocks.includes(s.symbol));
+
+  // Get Category Recommendations
+  const suggestionsByCategory = getCategorySuggestions();
+
   container.innerHTML = `
     <div class="page-header">
       <div>
@@ -51,12 +61,12 @@ function renderStockCompare(container) {
       </div>
     </div>
 
-    <!-- Stock Selection & Preset Card -->
+    <!-- Active Selected Stocks & Add/Remove Controls Card -->
     <div class="card" style="margin-bottom:20px;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:12px;">
         <div>
-          <div class="card-title" style="margin-bottom:2px">🎯 เลือกหุ้นสำหรับเปรียบเทียบ (กำลังเลือก ${selectedCompareStocks.length} หุ้น)</div>
-          <p style="font-size:12px;color:var(--text-secondary)">คลิกปุ่มเพื่อเลือก/ยกเลิกเลือก หรือเลือกจากหมวดหมู่ด่วน (Presets)</p>
+          <div class="card-title" style="margin-bottom:2px">🎯 หุ้นที่กำลังเปรียบเทียบบนกราฟ (${selectedCompareStocks.length} หุ้น)</div>
+          <p style="font-size:12px;color:var(--text-secondary)">คลิกปุ่ม ✖ ที่หุ้นเพื่อลบออก หรือใช้เมนูด้านล่างเพื่อเพิ่มหุ้นเข้าการเปรียบเทียบ</p>
         </div>
 
         <!-- Time Range Selector Buttons -->
@@ -68,41 +78,85 @@ function renderStockCompare(container) {
         </div>
       </div>
 
-      <!-- Presets -->
-      <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center;">
+      <!-- Active Stock Chips with Remove (✖) Buttons -->
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;align-items:center;">
+        ${selectedCompareStocks.map((symbol, idx) => {
+          const color = COMPARE_COLORS[idx % COMPARE_COLORS.length];
+          const stockInfo = COMPARE_STOCK_LIST.find(s => s.symbol === symbol);
+          const icon = stockInfo ? stockInfo.icon : '📈';
+          return `
+            <div style="display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:var(--radius-pill);background:${color}18;border:1px solid ${color}66;color:${color};font-weight:700;font-size:13px;">
+              <span>${icon} #${idx+1} ${symbol}</span>
+              <button onclick="removeCompareStock('${symbol}')" title="ลบ ${symbol} ออกจากการเปรียบเทียบ"
+                style="background:transparent;border:none;color:${color};cursor:pointer;font-size:14px;padding:0 2px;line-height:1;opacity:0.8;transition:opacity 0.15s;"
+                onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">
+                ✖
+              </button>
+            </div>
+          `;
+        }).join('')}
+
+        <!-- Add Stock Control Dropdown -->
+        <div style="display:inline-flex;align-items:center;gap:6px;margin-left:4px;">
+          <select id="add-stock-select" onchange="handleAddStockDropdown(this)"
+            style="padding:6px 12px;border-radius:var(--radius-pill);background:var(--bg-card-hover);border:1px solid var(--border-glow);color:var(--text-primary);font-family:'Outfit',sans-serif;font-size:12.5px;outline:none;cursor:pointer;">
+            <option value="">➕ เพิ่มหุ้นเปรียบเทียบ (Add Stock)...</option>
+            ${unselectedStocks.map(s => `
+              <option value="${s.symbol}">${s.icon} ${s.symbol} — ${s.name} (${s.category})</option>
+            `).join('')}
+          </select>
+        </div>
+      </div>
+
+      <!-- Presets & Quick Actions -->
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding-top:10px;border-top:1px dashed var(--border);">
         <span style="font-size:11px;color:var(--text-muted);margin-right:2px;">ชุดหุ้นแนะนำ:</span>
         ${STOCK_PRESETS.map(p => `
-          <button class="btn-link-action" style="font-size:11.5px;padding:4px 10px;background:rgba(0,153,255,0.08);color:var(--accent-2);border-color:rgba(0,153,255,0.25)"
+          <button class="btn-link-action" style="font-size:11px;padding:3px 9px;background:rgba(0,153,255,0.08);color:var(--accent-2);border-color:rgba(0,153,255,0.25)"
             onclick="applyStockPreset(['${p.stocks.join("','")}'])">
             ${p.label}
           </button>
         `).join('')}
-        <button class="btn-link-action" style="font-size:11.5px;padding:4px 10px;background:rgba(255,255,255,0.05);color:var(--text-secondary);border-color:var(--border)"
+        <button class="btn-link-action" style="font-size:11px;padding:3px 9px;background:rgba(255,255,255,0.05);color:var(--text-secondary);border-color:var(--border)"
           onclick="selectAllCompareStocks()">
           Select All
         </button>
-        <button class="btn-link-action" style="font-size:11.5px;padding:4px 10px;background:rgba(255,77,109,0.08);color:var(--red);border-color:rgba(255,77,109,0.25)"
+        <button class="btn-link-action" style="font-size:11px;padding:3px 9px;background:rgba(255,77,109,0.08);color:var(--red);border-color:rgba(255,77,109,0.25)"
           onclick="clearCompareStocks()">
-          Clear
+          Clear All
         </button>
       </div>
-
-      <!-- Stock Pills -->
-      <div class="pill-group" style="margin-bottom:0">
-        ${COMPARE_STOCK_LIST.map(s => {
-          const idx = selectedCompareStocks.indexOf(s.symbol);
-          const isSelected = idx >= 0;
-          const color = isSelected ? COMPARE_COLORS[idx % COMPARE_COLORS.length] : 'var(--text-secondary)';
-          return `
-            <button class="pill${isSelected ? ' active' : ''}" 
-              style="${isSelected ? `background:${color}22;color:${color};border-color:${color};font-weight:700` : ''}"
-              onclick="toggleCompareStock('${s.symbol}')">
-              ${s.symbol} ${isSelected ? `(#${idx+1})` : ''}
-            </button>
-          `;
-        }).join('')}
-      </div>
     </div>
+
+    <!-- Suggested Stocks in Same Categories Card -->
+    ${suggestionsByCategory.length > 0 ? `
+      <div class="card" style="margin-bottom:20px;background:rgba(0,212,170,0.03);border-color:rgba(0,212,170,0.15)">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
+          <div class="card-title" style="margin-bottom:0;color:var(--accent-1)">
+            💡 หุ้นแนะนำในหมวดหมู่เดียวกัน (Suggested Stocks in Same Categories)
+          </div>
+          <span style="font-size:11px;color:var(--text-muted)">คลิกเพื่อเพิ่มหุ้นเปรียบเทียบในกลุ่มอุตสาหกรรมเดียวกัน</span>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          ${suggestionsByCategory.map(group => `
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+              <span class="badge badge-teal" style="font-size:11px;padding:3px 8px;">
+                ${group.category} (${group.triggerStock})
+              </span>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                ${group.suggestions.map(s => `
+                  <button class="pill" style="font-size:12px;padding:3px 10px;border-color:var(--border-glow);color:var(--text-primary);background:rgba(255,255,255,0.03);"
+                    onclick="addCompareStock('${s.symbol}')">
+                    ➕ ${s.icon} <strong>${s.symbol}</strong> <span style="font-size:10.5px;color:var(--text-muted)">(${s.name})</span>
+                  </button>
+                `).join('')}
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    ` : ''}
 
     <!-- KPI Performance Insights Grid -->
     <div id="compare-kpi-grid" class="kpi-grid" style="margin-bottom:20px;"></div>
@@ -153,20 +207,56 @@ function renderStockCompare(container) {
   renderCompareAll();
 }
 
-function toggleCompareStock(symbol) {
+// Helper to calculate Category Suggestions
+function getCategorySuggestions() {
+  const selectedObjList = selectedCompareStocks
+    .map(sym => COMPARE_STOCK_LIST.find(s => s.symbol === sym))
+    .filter(Boolean);
+
+  // Collect active categories
+  const activeCategories = Array.from(new Set(selectedObjList.map(s => s.category)));
+
+  const result = [];
+  activeCategories.forEach(cat => {
+    // Find unselected stocks in this category
+    const unselected = COMPARE_STOCK_LIST.filter(s => s.category === cat && !selectedCompareStocks.includes(s.symbol));
+    if (unselected.length > 0) {
+      const trigger = selectedObjList.find(s => s.category === cat);
+      result.push({
+        category: cat,
+        triggerStock: trigger ? trigger.symbol : cat,
+        suggestions: unselected
+      });
+    }
+  });
+
+  return result;
+}
+
+function handleAddStockDropdown(selectEl) {
+  const sym = selectEl.value;
+  if (!sym) return;
+  addCompareStock(sym);
+}
+
+function addCompareStock(symbol) {
+  if (selectedCompareStocks.includes(symbol)) return;
+  if (selectedCompareStocks.length >= 10) {
+    alert("สามารถเลือกเปรียบเทียบได้สูงสุด 10 หุ้นพร้อมกัน");
+    return;
+  }
+  selectedCompareStocks.push(symbol);
+  renderStockCompare(document.getElementById('vp-stockcompare'));
+}
+
+function removeCompareStock(symbol) {
+  if (selectedCompareStocks.length <= 1) {
+    alert("ต้องเลือกอย่างน้อย 1 หุ้นเพื่อแสดงการเปรียบเทียบ");
+    return;
+  }
   const idx = selectedCompareStocks.indexOf(symbol);
   if (idx >= 0) {
-    if (selectedCompareStocks.length <= 1) {
-      alert("ต้องเลือกอย่างน้อย 1 หุ้นเพื่อแสดงการเปรียบเทียบ");
-      return;
-    }
     selectedCompareStocks.splice(idx, 1);
-  } else {
-    if (selectedCompareStocks.length >= 10) {
-      alert("สามารถเลือกเปรียบเทียบได้สูงสุด 10 หุ้นพร้อมกัน");
-      return;
-    }
-    selectedCompareStocks.push(symbol);
   }
   renderStockCompare(document.getElementById('vp-stockcompare'));
 }
@@ -660,11 +750,10 @@ function renderCompareTable() {
   }
 
   const { dates, dataMap } = getCommonStockData();
-  const qqqmPrices = (typeof stockPricesData !== 'undefined' && stockPricesData['QQQM']) ? stockPricesData['QQQM'] : null;
 
   tbody.innerHTML = filtered.map(s => {
     const pricesObj = (typeof stockPricesData !== 'undefined' && stockPricesData[s.symbol]) ? stockPricesData[s.symbol] : null;
-    let latest = null, firstPeriodP = null, maxP = null, minP = null, volPct = null, corrQQQM = null;
+    let latest = null, firstPeriodP = null, maxP = null, minP = null, volPct = null;
 
     if (pricesObj) {
       const stockDates = Object.keys(pricesObj).sort();
@@ -697,6 +786,8 @@ function renderCompareTable() {
     const retPct = (latest != null && firstPeriodP != null && firstPeriodP > 0)
       ? ((latest - firstPeriodP) / firstPeriodP * 100) : null;
 
+    const isSelected = selectedCompareStocks.includes(s.symbol);
+
     const fmtBadge = (pct) => {
       if (pct == null) return '<span style="color:var(--text-muted)">—</span>';
       const isPos = pct >= 0;
@@ -706,9 +797,9 @@ function renderCompareTable() {
     };
 
     return `
-      <tr>
+      <tr style="${isSelected ? 'background:rgba(0,212,170,0.03);' : ''}">
         <td>
-          <strong style="color:var(--text-primary);font-size:14px">${s.symbol}</strong>
+          <strong style="color:var(--text-primary);font-size:14px">${s.icon} ${s.symbol}</strong>
           <div style="font-size:11px;color:var(--text-muted)">${s.name}</div>
         </td>
         <td><span class="badge badge-blue">${s.category}</span></td>
@@ -718,7 +809,17 @@ function renderCompareTable() {
         <td style="text-align:right" class="num">${minP ? '$' + formatNum(minP, 2) : '—'}</td>
         <td style="text-align:right" class="num">${volPct != null ? formatNum(volPct, 2) + '%' : '—'}</td>
         <td style="text-align:right">
-          <span class="badge badge-purple">${s.symbol === 'QQQM' ? '1.00 (Benchmark)' : 'Active'}</span>
+          ${isSelected ? `
+            <button class="btn-link-action" style="font-size:11px;padding:3px 8px;background:rgba(255,77,109,0.1);color:var(--red);border-color:rgba(255,77,109,0.3)"
+              onclick="removeCompareStock('${s.symbol}')">
+              ✖ Remove
+            </button>
+          ` : `
+            <button class="btn-link-action" style="font-size:11px;padding:3px 8px;background:rgba(0,212,170,0.1);color:var(--accent-1);border-color:rgba(0,212,170,0.3)"
+              onclick="addCompareStock('${s.symbol}')">
+              ➕ Add to Compare
+            </button>
+          `}
         </td>
         <td style="text-align:center">
           <a href="https://www.tradingview.com/chart/?symbol=${s.symbol}" target="_blank" rel="noopener noreferrer"
